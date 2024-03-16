@@ -1,30 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LITES</title>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <img src="assets/images/LITES Logo with Text Border.png" alt="LITES Logo" class="logo">
-      <p>Library Information and Tracking Efficiency System</p>
-      <div class="search-bar">
-        <input type="text" class="search-input" placeholder="Search for books">
-        <button class="search-button">Search</button>
-      </div>
-    </div>
-    <div class="tabs">
-      <ul>
-        <li>All Books</li>
-        <li>Section 1</li>
-        <li>Section 2</li>
-        <li>Section 3</li>
-        <li>Section 4</li>
-      </ul>
+<div class="container">
+  <div class="header">
+    <img src="assets/images/LITES Logo with Text Border.png" alt="LITES Logo" class="logo">
+    <p>Library Information and Tracking Efficiency System</p>
+    <div class="search-bar">
+      <input type="text" class="search-input" placeholder="Search for resources" [(ngModel)]="searchInput">
+     
     </div>
   </div>
-</body>
-</html>
-
+  <div class="tabs">
+    <ul>
+      <li (click)="filterBooksByTab('All Books')">All Books</li>
+      <li (click)="filterBooksByTab('General Reference')">General Reference</li>
+      <li (click)="filterBooksByTab('Fiction')">Fiction</li>
+      <li (click)="filterBooksByTab('Subject Reference')">Subject Reference</li>
+      <li (click)="filterBooksByTab('Periodicals')">Periodicals</li>
+    </ul>
+  </div>
+  <div class="book-container">
+    <ng-container *ngIf="books$ | async as books">
+      <div class="book-card" *ngFor="let book of filteredBooks(books)" (click)="onCardClick(book)">
+        <img [src]="book.cover" alt="Book Cover" class="book-picture">
+        <div class="book-details">
+          <div class="book-title">{{ book.title }}</div>
+          <div class="book-author">{{ book.author }}</div>
+          <div class="book-year">{{ book.year }}</div>
+          <div class="book-publication">{{ book.publication }}</div>
+          <div class="book-description">{{ book.description }}</div>
+          <div class="book-isbn">ISBN: {{ book.isbn }}</div>
+          <div class="book-section">{{ book.section }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

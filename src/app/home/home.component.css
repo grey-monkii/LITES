@@ -69,4 +69,41 @@ body {
     cursor: pointer;
     font-weight: bold;
   }
+  .book-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .book-card {
+    background-color: gold;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    width: 300px;
+  }
+  
+  .book-picture {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  
+  .book-details {
+    padding: 10px;
+  }
+  
+  .book-title {
+    font-weight: bolder;
+  }
+  
+  .book-author,
+  .book-year,
+  .book-publication,
+  .book-description,
+  .book-isbn,
+  .book-section {
+    margin-top: 5px;
+    color: maroon;
+  }
   

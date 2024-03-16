@@ -51,7 +51,7 @@
       </thead>
       <tbody>
         <!-- Loop through filtered resources based on selected section -->
-        <tr *ngFor="let resource of filteredResources">
+        <tr *ngFor="let resource of filteredResources" (click)="onRowClick(resource)">
           <td>{{ resource.section }}</td>
           <td><img [src]="resource.cover" alt="Cover Image" style="max-width: 100px;"></td>
           <td>{{ resource.title }}</td>

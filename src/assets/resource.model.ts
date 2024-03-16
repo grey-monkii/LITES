@@ -1,5 +1,6 @@
 export interface Resource {
-    cover: string; // URL for the cover image
+    section : string;
+    cover: File | null; // URL for the cover image
     title: string;
     author: string;
     isbn: string;

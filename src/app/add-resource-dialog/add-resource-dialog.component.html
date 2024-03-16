@@ -1,13 +1,20 @@
 <div class="dialog-container">
     <h2>Add Resource</h2>
     <form (submit)="addResource()">
-      <input type="file" accept="image/*" (change)="onCoverSelected($event)" required><br><br>
-      <input type="text" placeholder="Title" [(ngModel)]="resource.title" required><br><br>
-      <input type="text" placeholder="Author" [(ngModel)]="resource.author" required><br><br>
-      <input type="text" placeholder="ISBN" [(ngModel)]="resource.isbn" required><br><br>
-      <input type="number" placeholder="Year" [(ngModel)]="resource.year" required><br><br>
-      <input type="text" placeholder="Publication" [(ngModel)]="resource.publication" required><br><br>
-      <textarea placeholder="Description" [(ngModel)]="resource.description" required></textarea><br><br>
+      <select [(ngModel)]="resource.section" name="section" required>
+        <option value="" disabled>Select Section</option>
+        <option value="General Reference">General Reference</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Subject Reference">Subject Reference</option>
+        <option value="Periodicals">Periodicals</option>
+      </select><br><br>
+      <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" required><br><br>
+      <input type="text" placeholder="Title" [(ngModel)]="resource.title" name="title" required><br><br>
+      <input type="text" placeholder="Author" [(ngModel)]="resource.author" name="author" required><br><br>
+      <input type="text" placeholder="ISBN" [(ngModel)]="resource.isbn" name="isbn" required><br><br>
+      <input type="text" placeholder="Year" [(ngModel)]="resource.year" name="year" required><br><br>
+      <input type="text" placeholder="Publication" [(ngModel)]="resource.publication" name="publication" required><br><br>
+      <textarea placeholder="Description" [(ngModel)]="resource.description" name="description" required></textarea><br><br>
       <button type="submit">Add</button>
     </form>
   </div>

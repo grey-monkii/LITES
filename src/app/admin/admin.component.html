@@ -1,19 +1,34 @@
 <div class="header">
   <img src="assets/images/LITES Logo without Text Border.png" alt="LITES Logo" class="logo">
-  <button class="logout-button" *ngIf="isLoggedIn()">Logout</button>
-</div>
-<div class="content">
   <h1 class="title">Inventory Manager</h1>
-  <div class="tabs">
-    <ul>
-      <li [class.active]="activeTab === 'book-inventory'" (click)="activeTab = 'book-inventory';">Book Inventory</li>
-      <li [class.active]="activeTab === 'analytics'" (click)="activeTab = 'analytics';">Analytics</li>
-    </ul>
-  </div>
-  <div class="book-inventory" *ngIf="activeTab === 'book-inventory'">
+</div>
+
+<div class="STcontainer">
+  <nav class="side_navbar">
+      <ul class="ul2">
+          <li><a routerLink="/admin">
+              <img src="assets/images/book-icon.png" alt="" class="icon-size">
+              <span class="nav-item">Resources</span>
+          </a></li>
+          <li><a routerLink="/superadmin-customer">
+              <img src="assets/images/analytics-icon.png" alt="" class="icon-size">
+              <span class="nav-item">Analytics</span>
+          </a></li>
+          <li><a routerLink="/login">
+              <img src="assets/images/logout-icon.png" alt="" class="icon-size">
+              <span class="nav-item">Logout</span>
+          </a></li>
+      </ul>
+  </nav>
+</div>
+
+<div class="content">
+  <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
+  <div class="book-inventory">
     <table>
       <thead>
         <tr>
+          <th>Section</th>
           <th>Cover</th>
           <th>Title</th>
           <th>Author</th>
@@ -24,22 +39,23 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Table rows will be populated with data from Firestore -->
-        <tr *ngFor="let book of bookInventory">
-          <td>{{ book.cover }}</td>
-          <td>{{ book.title }}</td>
-          <td>{{ book.author }}</td>
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.year }}</td>
-          <td>{{ book.publication }}</td>
-          <td>{{ book.description }}</td>
+        <!-- Table rows will be populated with data from the database -->
+        <tr>
+          <!-- Sample data -->
+          <td>Section 1</td>
+          <td>Cover Image</td>
+          <td>Book Title</td>
+          <td>Author Name</td>
+          <td>ISBN Number</td>
+          <td>Publication Year</td>
+          <td>Publisher</td>
+          <td>Book Description</td>
         </tr>
       </tbody>
     </table>
-    <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
+    
   </div>
-  
-  <div class="analytics" *ngIf="activeTab === 'analytics'">
-    <!-- Analytics content goes here -->
-  </div>
+  <ng-template #noResources>
+    <p>No resources listed</p>
+  </ng-template>
 </div>

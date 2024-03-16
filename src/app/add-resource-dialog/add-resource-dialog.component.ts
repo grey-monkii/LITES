@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Resource } from '../../assets/resource.model';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-add-resource-dialog',
@@ -9,7 +11,8 @@ import { Resource } from '../../assets/resource.model';
 })
 export class AddResourceDialogComponent {
   resource: Resource = {
-    cover: '',
+    section: '',
+    cover: null,
     title: '',
     author: '',
     isbn: '',
@@ -18,7 +21,11 @@ export class AddResourceDialogComponent {
     description: ''
   };
 
-  constructor(private dialogRef: MatDialogRef<AddResourceDialogComponent>) {}
+  constructor(
+    private dialogRef: MatDialogRef<AddResourceDialogComponent>,
+    private firestore: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {}
 
   // Function to handle cover image selection
   onCoverSelected(event: any) {
@@ -26,20 +33,28 @@ export class AddResourceDialogComponent {
     this.resource.cover = file;
   }
 
-  // Function to add the resource
-  addResource() {
+  async addResource() {
     // Perform validation here if needed
-
+  
     // Upload cover image to Firebase Storage
     const coverFile = this.resource.cover;
+    let coverUrl = '';
     if (coverFile) {
-      // Implement logic to upload cover image
+      const filePath = `covers/${new Date().getTime()}_${coverFile.name}`;
+      const storageRef = this.storage.ref(filePath);
+      await storageRef.put(coverFile);
+      coverUrl = await storageRef.getDownloadURL().toPromise();
     }
-
+  
+    // Prepare resource data
+    const resourceId = this.resource.title; // Use title as document ID
+    const resourceData = { ...this.resource, cover: coverUrl }; // Include cover URL in data
+  
     // Add resource data to Firestore database
-    console.log('Resource data:', this.resource);
-
+    await this.firestore.collection(this.resource.section).doc(resourceId).set(resourceData);
+  
     // Close the dialog
     this.dialogRef.close();
   }
+  
 }

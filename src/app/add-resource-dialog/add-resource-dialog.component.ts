@@ -34,8 +34,20 @@ export class AddResourceDialogComponent {
   }
 
   async addResource() {
-    // Perform validation here if needed
-  
+    // Check if any required fields are empty
+    if (!this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description) {
+      const confirmResult = window.confirm('Some fields are empty. Are you sure you want to proceed?');
+      if (confirmResult) {
+        // Proceed with adding the resource
+        this.addResourceToFirestore();
+      }
+    } else {
+      // All fields are filled, proceed with adding the resource
+      this.addResourceToFirestore();
+    }
+  }
+
+  private async addResourceToFirestore() {
     // Upload cover image to Firebase Storage
     const coverFile = this.resource.cover;
     let coverUrl = '';
@@ -45,16 +57,16 @@ export class AddResourceDialogComponent {
       await storageRef.put(coverFile);
       coverUrl = await storageRef.getDownloadURL().toPromise();
     }
-  
+
     // Prepare resource data
     const resourceId = this.resource.title; // Use title as document ID
     const resourceData = { ...this.resource, cover: coverUrl }; // Include cover URL in data
-  
+
     // Add resource data to Firestore database
     await this.firestore.collection(this.resource.section).doc(resourceId).set(resourceData);
-  
+
     // Close the dialog
     this.dialogRef.close();
+    window.location.reload();
   }
-  
 }

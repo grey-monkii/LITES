@@ -1,29 +1,40 @@
 <div class="header">
   <img src="assets/images/LITES Logo without Text Border.png" alt="LITES Logo" class="logo">
   <h1 class="title">Inventory Manager</h1>
+  <input type="text" class="search-bar" placeholder="Search" (input)="onSearchChange($event)">
 </div>
 
 <div class="STcontainer">
   <nav class="side_navbar">
-      <ul class="ul2">
-          <li><a routerLink="/admin">
-              <img src="assets/images/book-icon.png" alt="" class="icon-size">
-              <span class="nav-item">Resources</span>
-          </a></li>
-          <li><a routerLink="/superadmin-customer">
-              <img src="assets/images/analytics-icon.png" alt="" class="icon-size">
-              <span class="nav-item">Analytics</span>
-          </a></li>
-          <li><a routerLink="/login">
-              <img src="assets/images/logout-icon.png" alt="" class="icon-size">
-              <span class="nav-item">Logout</span>
-          </a></li>
-      </ul>
+    <ul class="ul2">
+      <li><a routerLink="/admin">
+          <img src="assets/images/book-icon.png" alt="" class="icon-size">
+          <span class="nav-item">Resources</span>
+      </a></li>
+      <li><a routerLink="/superadmin-customer">
+          <img src="assets/images/analytics-icon.png" alt="" class="icon-size">
+          <span class="nav-item">Analytics</span>
+      </a></li>
+      <li><a routerLink="/login">
+          <img src="assets/images/logout-icon.png" alt="" class="icon-size">
+          <span class="nav-item">Logout</span>
+      </a></li>
+    </ul>
   </nav>
 </div>
 
 <div class="content">
-  <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
+  <div class="dropdown-container">
+    <!-- Bind selectedSection to the select element -->
+    <select class="dropdown" [(ngModel)]="selectedSection" (change)="filterResources()">
+      <option value="All">All Resources</option>
+      <option value="General Reference">General Reference</option>
+      <option value="Fiction">Fiction</option>
+      <option value="Subject Reference">Subject Reference</option>
+      <option value="Periodicals">Periodical</option>
+    </select>
+    <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
+  </div>
   <div class="book-inventory">
     <table>
       <thead>
@@ -39,22 +50,20 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Table rows will be populated with data from the database -->
-        <tr>
-          <!-- Sample data -->
-          <td>Section 1</td>
-          <td>Cover Image</td>
-          <td>Book Title</td>
-          <td>Author Name</td>
-          <td>ISBN Number</td>
-          <td>Publication Year</td>
-          <td>Publisher</td>
-          <td>Book Description</td>
+        <!-- Loop through filtered resources based on selected section -->
+        <tr *ngFor="let resource of filteredResources">
+          <td>{{ resource.section }}</td>
+          <td><img [src]="resource.cover" alt="Cover Image" style="max-width: 100px;"></td>
+          <td>{{ resource.title }}</td>
+          <td>{{ resource.author }}</td>
+          <td>{{ resource.isbn }}</td>
+          <td>{{ resource.year }}</td>
+          <td>{{ resource.publication }}</td>
+          <td>{{ resource.description }}</td>
         </tr>
-      </tbody>
+      </tbody>      
     </table>
-    
-  </div>
+  </div>  
   <ng-template #noResources>
     <p>No resources listed</p>
   </ng-template>

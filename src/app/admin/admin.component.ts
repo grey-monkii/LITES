@@ -1,31 +1,69 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
 import { AddResourceDialogComponent } from '../add-resource-dialog/add-resource-dialog.component';
-import { AngularFirestore } from '@angular/fire/compat/firestore'; // Import AngularFirestore
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Resource } from '../../assets/resource.model';
+import { map } from 'rxjs/operators'; // Import the map operator
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit { // Implement OnInit interface
-  activeTab: string = 'book-inventory';
-  bookInventory: any[] = []; // Initialize as empty array
+export class AdminComponent implements OnInit {
+  resourceInventory: Resource[] = [];
+  filteredResources: Resource[] = [];
+  selectedSection: string = 'All';
+  searchQuery: string = '';
 
   constructor(
     public dialog: MatDialog,
-    private firestore: AngularFirestore // Inject AngularFirestore
+    private firestore: AngularFirestore
   ) {}
 
-  ngOnInit(): void { // Fetch data on component initialization
-    this.fetchBookInventory();
+  ngOnInit(): void {
+    this.fetchResourceInventory();
   }
 
-  fetchBookInventory(): void {
-    // Example: Fetch book inventory data from Firestore collection
-    this.firestore.collection('books').valueChanges().subscribe((books: any[]) => {
-      this.bookInventory = books; // Assign fetched data to bookInventory
+  fetchResourceInventory(): void {
+    const collections = ['General Reference', 'Fiction', 'Subject Reference', 'Periodicals'];
+  
+    collections.forEach(collection => {
+      this.firestore.collection(collection).valueChanges().pipe(
+        map((resources: any[]) => resources as Resource[])
+      ).subscribe((resources: Resource[]) => {
+        this.resourceInventory = [...this.resourceInventory, ...resources];
+        this.filterResources();
+      });
     });
+  }
+
+  filterResources(): void {
+    let filtered: Resource[] = this.resourceInventory;
+
+    // Apply section filter
+    if (this.selectedSection !== 'All') {
+      filtered = filtered.filter(resource => resource.section === this.selectedSection);
+    }
+
+    // Apply search filter
+    if (this.searchQuery.trim() !== '') {
+      const query = this.searchQuery.trim().toLowerCase();
+      filtered = filtered.filter(resource => 
+        resource.title.toLowerCase().includes(query) ||
+        resource.author.toLowerCase().includes(query) ||
+        resource.isbn.toLowerCase().includes(query) ||
+        resource.publication.toLowerCase().includes(query) ||
+        resource.description.toLowerCase().includes(query)
+      );
+    }
+
+    this.filteredResources = filtered;
+  }
+
+  onSearchChange(event: any): void {
+    this.searchQuery = event.target.value;
+    this.filterResources();
   }
 
   isLoggedIn(): boolean {
@@ -34,13 +72,11 @@ export class AdminComponent implements OnInit { // Implement OnInit interface
   }
 
   addResource(): void {
-    // Open pop-up window for adding resource
     const dialogRef = this.dialog.open(AddResourceDialogComponent, {
       width: '400px'
     });
   }
 
-  // Logout function
   logout(): void {
     // Implement logout functionality here
   }

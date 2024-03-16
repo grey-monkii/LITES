@@ -1,0 +1,71 @@
+.header {
+    background-color: maroon;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .logo {
+    width: 100px; /* Adjust size as needed */
+  }
+  
+  .logout-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .content {
+    background-color: maroon;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    color: white;
+  }
+  
+  .tabs {
+    margin-top: 20px;
+  }
+  
+  .tabs ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .tabs ul li {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: gold;
+    color: maroon;
+    cursor: pointer;
+    
+  }
+  
+  .book-inventory,
+  .analytics {
+    display: none;
+  }
+  
+  .book-inventory.show,
+  .analytics.show {
+    display: block;
+  }
+  
+  .add-resource-button {
+    background-color: gold;
+    color: maroon;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  

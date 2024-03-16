@@ -1,0 +1,45 @@
+<div class="header">
+  <img src="assets/images/LITES Logo without Text Border.png" alt="LITES Logo" class="logo">
+  <button class="logout-button" *ngIf="isLoggedIn()">Logout</button>
+</div>
+<div class="content">
+  <h1 class="title">Inventory Manager</h1>
+  <div class="tabs">
+    <ul>
+      <li [class.active]="activeTab === 'book-inventory'" (click)="activeTab = 'book-inventory';">Book Inventory</li>
+      <li [class.active]="activeTab === 'analytics'" (click)="activeTab = 'analytics';">Analytics</li>
+    </ul>
+  </div>
+  <div class="book-inventory" *ngIf="activeTab === 'book-inventory'">
+    <table>
+      <thead>
+        <tr>
+          <th>Cover</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Year</th>
+          <th>Publication</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table rows will be populated with data from Firestore -->
+        <tr *ngFor="let book of bookInventory">
+          <td>{{ book.cover }}</td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.year }}</td>
+          <td>{{ book.publication }}</td>
+          <td>{{ book.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
+  </div>
+  
+  <div class="analytics" *ngIf="activeTab === 'analytics'">
+    <!-- Analytics content goes here -->
+  </div>
+</div>

@@ -42,13 +42,9 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  onSearch(): void {
-    // Perform search operation here
-    // You can update the filtered books based on the search input
-  }
-
   onCardClick(book: any): void {
     // Display confirmation dialog
+    this.updateSearchCount(book); //increment searched field
     const confirmSearch = window.confirm('Do you want to find this book using LITES?');
   
     // Check user's response
@@ -61,6 +57,15 @@ export class HomeComponent implements OnInit {
       console.log('User cancelled search.');
       // You can perform any other action here, such as closing the dialog or doing nothing
     }
+  }
+
+  
+  updateSearchCount(book: any): void {
+    // Update the "searched" field in Firestore based on the book's location
+    const bookRef = this.firestore.collection(book.section).doc(book.id); // Assuming "location" is the collection name and "id" is the document ID
+    bookRef.update({ searched: (book.searched || 0) + 1 })
+      .then(() => console.log('Search count updated successfully'))
+      .catch(error => console.error('Error updating search count:', error));
   }
   
   

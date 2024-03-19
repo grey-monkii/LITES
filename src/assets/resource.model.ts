@@ -7,5 +7,9 @@ export interface Resource {
     year: number | null;
     publication: string;
     description: string;
+    shelf : string;
+    level : string;
+    searched: number;
+    editable : boolean;
   }
   

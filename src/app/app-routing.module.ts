@@ -4,13 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { AddResourceDialogComponent } from './add-resource-dialog/add-resource-dialog.component';
+import { AuthenticationGuard } from '../assets/service/authentication.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, // Assuming AppComponent is your main component
   { path: 'login', component: LoginComponent },
-  { path: 'admin', component: AdminComponent },
-  { path: 'add-resource', component: AddResourceDialogComponent},
+  { path: 'admin', component: AdminComponent, canActivate: [AuthenticationGuard] }
+
 ];
 
 @NgModule({

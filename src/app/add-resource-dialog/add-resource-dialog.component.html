@@ -7,14 +7,34 @@
         <option value="Fiction">Fiction</option>
         <option value="Subject Reference">Subject Reference</option>
         <option value="Periodicals">Periodicals</option>
-      </select><br><br>
-      <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" required><br><br>
-      <input type="text" placeholder="Title" [(ngModel)]="resource.title" name="title" required><br><br>
-      <input type="text" placeholder="Author" [(ngModel)]="resource.author" name="author" required><br><br>
-      <input type="text" placeholder="ISBN" [(ngModel)]="resource.isbn" name="isbn" required><br><br>
-      <input type="text" placeholder="Year" [(ngModel)]="resource.year" name="year" required><br><br>
-      <input type="text" placeholder="Publication" [(ngModel)]="resource.publication" name="publication" required><br><br>
-      <textarea placeholder="Description" [(ngModel)]="resource.description" name="description" required></textarea><br><br>
+      </select><br>
+      <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" required><br>
+      <input type="text" placeholder="Title" [(ngModel)]="resource.title" name="title" required><br>
+      <input type="text" placeholder="Author" [(ngModel)]="resource.author" name="author" required><br>
+      <input type="text" placeholder="ISBN" [(ngModel)]="resource.isbn" name="isbn" required><br>
+      <input type="text" placeholder="Year" [(ngModel)]="resource.year" name="year" required><br>
+      <input type="text" placeholder="Publication" [(ngModel)]="resource.publication" name="publication" required><br>
+      <textarea placeholder="Description" [(ngModel)]="resource.description" name="description" required></textarea><br>
+      <select [(ngModel)]="resource.shelf" name="shelf" required>
+        <option value="" disabled>Select Shelf</option>
+        <option value="Shelf A">Shelf A</option>
+        <option value="Shelf B">Shelf B</option>
+        <option value="Shelf C">Shelf C</option>
+        <option value="Shelf D">Shelf D</option>
+        <option value="Shelf E">Shelf E</option>
+        <option value="Shelf F">Shelf F</option>
+        <option value="Shelf G">Shelf G</option>
+        <option value="Shelf H">Shelf H</option>
+        <option value="Shelf I">Shelf I</option>
+        <option value="Shelf J">Shelf J</option>
+      </select><br>
+      <select [(ngModel)]="resource.level" name="level" required>
+        <option value="" disabled>Select Level</option>
+        <option value="Level 1">Level 1</option>
+        <option value="Level 2">Level 2</option>
+        <option value="Level 3">Level 3</option>
+        <option value="Level 4">Level 4</option>
+      </select><br>
       <button type="submit">Add</button>
     </form>
   </div>

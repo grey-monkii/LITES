@@ -18,6 +18,7 @@
 .dialog-container input[type="file"],
 .dialog-container input[type="text"],
 .dialog-container input[type="number"],
+.dialog-container select,
 .dialog-container textarea {
   padding: 8px;
   border: 1px solid #ccc;

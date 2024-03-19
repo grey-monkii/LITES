@@ -18,7 +18,11 @@ export class AddResourceDialogComponent {
     isbn: '',
     year: null,
     publication: '',
-    description: ''
+    description: '',
+    searched: 0,
+    shelf: '',
+    level: '',
+    editable: false,
   };
 
   constructor(
@@ -34,14 +38,12 @@ export class AddResourceDialogComponent {
   }
 
   async addResource() {
-    // Check if any required fields are empty
-    if (!this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description) {
-      const confirmResult = window.confirm('Some fields are empty. Are you sure you want to proceed?');
-      if (confirmResult) {
-        // Proceed with adding the resource
-        this.addResourceToFirestore();
+       // Check if shelf and level are filled
+    if (!this.resource.shelf || !this.resource.level || !this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description) {
+        window.alert('Please provide all the required information.');
+        return; // Stop execution if shelf or level is not filled
       }
-    } else {
+   else {
       // All fields are filled, proceed with adding the resource
       this.addResourceToFirestore();
     }

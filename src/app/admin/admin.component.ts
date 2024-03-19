@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Resource } from '../../assets/resource.model';
 import { map } from 'rxjs/operators'; // Import the map operator
 import { AngularFireStorage } from '@angular/fire/compat/storage'; 
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-admin',
@@ -20,7 +21,8 @@ export class AdminComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private auth: AngularFireAuth
   ) {}
 
   ngOnInit(): void {
@@ -123,7 +125,15 @@ export class AdminComponent implements OnInit {
 }
 
   
-  logout(): void {
-    // Implement logout functionality here
+async logout() {
+  try {
+    await this.auth.signOut();
+    window.location.reload();
+    // Redirect to login page after logout
+  } catch (error) {
+    console.error('Logout error:', error);
+    // Display error message to the user
+    window.alert('An error occurred while logging out. Please try again.');
   }
+}
 }

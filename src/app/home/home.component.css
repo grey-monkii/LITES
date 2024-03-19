@@ -101,9 +101,17 @@ body {
   .book-year,
   .book-publication,
   .book-description,
-  .book-isbn,
-  .book-section {
+  .book-isbn
+  {
     margin-top: 5px;
     color: maroon;
   }
+
+  .book-location {
+    margin-top: 5px;
+    color: maroon;
+    font-size: medium; /* Make the font smaller */
+    font-family: 'Arial', sans-serif; /* Use a different font */
+}
+
   

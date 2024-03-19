@@ -47,12 +47,13 @@
           <th>Year</th>
           <th>Publication</th>
           <th>Description</th>
+          <th>No. of Searches</th>
         </tr>
       </thead>
       <tbody>
         <!-- Loop through filtered resources based on selected section -->
         <tr *ngFor="let resource of filteredResources" (click)="onRowClick(resource)">
-          <td>{{ resource.section }}</td>
+          <td>{{ resource.section }} {{resource.shelf}}{{resource.level}}</td>
           <td><img [src]="resource.cover" alt="Cover Image" style="max-width: 100px;"></td>
           <td>{{ resource.title }}</td>
           <td>{{ resource.author }}</td>
@@ -60,6 +61,7 @@
           <td>{{ resource.year }}</td>
           <td>{{ resource.publication }}</td>
           <td>{{ resource.description }}</td>
+          <td>{{ resource.searched }}</td>
         </tr>
       </tbody>      
     </table>

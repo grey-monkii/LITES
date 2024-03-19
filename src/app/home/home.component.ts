@@ -38,7 +38,14 @@ export class HomeComponent implements OnInit {
     return books.filter(book =>
       (this.selectedTab === 'All Books' || book.section === this.selectedTab) &&
       (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.author.toLowerCase().includes(this.searchInput.toLowerCase()))
+      book.author.toLowerCase().includes(this.searchInput.toLowerCase()))||
+      book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+      book.section.toLowerCase().includes(this.searchInput.toLowerCase()) 
     );
   }
 
@@ -62,7 +69,7 @@ export class HomeComponent implements OnInit {
   
   updateSearchCount(book: any): void {
     // Update the "searched" field in Firestore based on the book's location
-    const bookRef = this.firestore.collection(book.section).doc(book.id); // Assuming "location" is the collection name and "id" is the document ID
+    const bookRef = this.firestore.collection(book.section).doc(book.title); // Assuming "location" is the collection name and "id" is the document ID
     bookRef.update({ searched: (book.searched || 0) + 1 })
       .then(() => console.log('Search count updated successfully'))
       .catch(error => console.error('Error updating search count:', error));

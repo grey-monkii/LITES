@@ -74,6 +74,10 @@ export class HomeComponent implements OnInit {
       .then(() => console.log('Search count updated successfully'))
       .catch(error => console.error('Error updating search count:', error));
   }
+
+  noSearchResults(books: any[] | null): boolean {
+    return this.searchInput.trim() !== '' && (books === null || this.filteredBooks(books).length === 0);
+  }
   
-  
+
 }

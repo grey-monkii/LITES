@@ -4,6 +4,9 @@ body {
     font-family: Arial, sans-serif;
   }
   
+  p {
+    color: white;
+  }
   .container {
     background-color: maroon;
     padding-bottom: 20px; /* Adjust as needed */
@@ -49,9 +52,6 @@ body {
     background-color: white;
     text-align: center;
   }
-  p{
-    color: white;
-  }
   
   .tabs ul {
     list-style-type: none;
@@ -69,6 +69,12 @@ body {
     cursor: pointer;
     font-weight: bold;
   }
+  
+  .selected-tab {
+    background-color: maroon;
+    color: white;
+  }
+  
   .book-container {
     display: flex;
     flex-wrap: wrap;
@@ -112,6 +118,15 @@ body {
     color: maroon;
     font-size: medium; /* Make the font smaller */
     font-family: 'Arial', sans-serif; /* Use a different font */
+}
+
+.no-results-message{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: large; /* Make the font smaller */
+  font-family: 'Arial', sans-serif; /* Use a different font */
+  color: white;
 }
 
   

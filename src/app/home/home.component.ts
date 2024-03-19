@@ -35,19 +35,35 @@ export class HomeComponent implements OnInit {
   }
 
   filteredBooks(books: any[]): any[] {
-    return books.filter(book =>
-      (this.selectedTab === 'All Books' || book.section === this.selectedTab) &&
-      (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.author.toLowerCase().includes(this.searchInput.toLowerCase()))||
-      book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-      book.section.toLowerCase().includes(this.searchInput.toLowerCase()) 
-    );
+    if (this.selectedTab === 'All Books') {
+      return books.filter(book =>
+        (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
+      );
+    } else {
+      return books.filter(book =>
+        book.section === this.selectedTab &&
+        (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+        book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
+      );
+    }
   }
+  
+  
 
   onCardClick(book: any): void {
     // Display confirmation dialog

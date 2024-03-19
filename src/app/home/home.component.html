@@ -9,14 +9,14 @@
   </div>
   <div class="tabs">
     <ul>
-      <li (click)="filterBooksByTab('All Books')" [ngClass]="{'selected-tab': selectedTab === 'All Books', 'unselected-tab': selectedTab !== 'All Books'}">All Books</li>
-      <li (click)="filterBooksByTab('General Reference')" [ngClass]="{'selected-tab': selectedTab === 'General Reference', 'unselected-tab': selectedTab !== 'General Reference'}">General Reference</li>
-      <li (click)="filterBooksByTab('Fiction')" [ngClass]="{'selected-tab': selectedTab === 'Fiction', 'unselected-tab': selectedTab !== 'Fiction'}">Fiction</li>
-      <li (click)="filterBooksByTab('Subject Reference')" [ngClass]="{'selected-tab': selectedTab === 'Subject Reference', 'unselected-tab': selectedTab !== 'Subject Reference'}">Subject Reference</li>
-      <li (click)="filterBooksByTab('Periodicals')" [ngClass]="{'selected-tab': selectedTab === 'Periodicals', 'unselected-tab': selectedTab !== 'Periodicals'}">Periodicals</li>
+      <li (click)="filterBooksByTab('All Books')" [class.selected-tab]="selectedTab === 'All Books'">All Books</li>
+      <li (click)="filterBooksByTab('General Reference')" [class.selected-tab]="selectedTab === 'General Reference'">General Reference</li>
+      <li (click)="filterBooksByTab('Fiction')" [class.selected-tab]="selectedTab === 'Fiction'">Fiction</li>
+      <li (click)="filterBooksByTab('Subject Reference')" [class.selected-tab]="selectedTab === 'Subject Reference'">Subject Reference</li>
+      <li (click)="filterBooksByTab('Periodicals')" [class.selected-tab]="selectedTab === 'Periodicals'">Periodicals</li>
     </ul>
   </div>
-  
+
   <div class="book-container">
     <ng-container *ngIf="books$ | async as books">
       <div class="book-card" *ngFor="let book of filteredBooks(books)" (click)="onCardClick(book)">

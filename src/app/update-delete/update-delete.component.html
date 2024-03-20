@@ -11,7 +11,8 @@
       <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" >
       <label *ngIf="!data.cover">Upload New Cover</label>
       <label *ngIf="data.cover">Ignore to retain current cover</label><br>      
-      <input type="text" placeholder="Title" [(ngModel)]="data.title" name="title" required><br>
+      <input type="text" placeholder="Title" [(ngModel)]="data.title" name="title" disabled>
+      <label>*changing of title is prohibited</label><br>
       <input type="text" placeholder="Author" [(ngModel)]="data.author" name="author" required><br>
       <input type="text" placeholder="ISBN" [(ngModel)]="data.isbn" name="isbn" required><br>
       <input type="text" placeholder="Year" [(ngModel)]="data.year" name="year" required><br>

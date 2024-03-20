@@ -49,7 +49,6 @@ body {
  
   
   .tabs {
-    background-color: white;
     text-align: center;
   }
   
@@ -57,6 +56,7 @@ body {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    
   }
   
   .tabs ul li {
@@ -64,13 +64,13 @@ body {
     margin: 10px;
     padding: 10px 30px;
     border-radius: 5px;
-    background-color: gold;
-    color: maroon;
     cursor: pointer;
     font-weight: bold;
+    background-color: gold;
+    color: maroon;
   }
   
-  .selected-tab {
+  .tabs ul li.selected-tab {
     background-color: maroon;
     color: white;
   }

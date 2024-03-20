@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { RecoveryDialogComponent } from '../recovery-dialog/recovery-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,14 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private auth: AngularFireAuth, private router: Router) { }
+  constructor(private auth: AngularFireAuth, private router: Router, private dialog: MatDialog) { }
+
+  openRecoveryDialog() {
+    this.dialog.open(RecoveryDialogComponent, {
+      width: '400px',
+      autoFocus: false // Prevent auto-focusing on input fields in the dialog
+    });
+  }
 
   async login(email: string, password: string) {
     try {

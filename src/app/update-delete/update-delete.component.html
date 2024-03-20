@@ -10,7 +10,7 @@
       </select><br>
       <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" >
       <label *ngIf="!data.cover">Upload New Cover</label>
-      <label *ngIf="data.cover">Ignore to retain current cover</label><br>      
+      <label *ngIf="data.cover">*ignore to retain current cover</label><br>      
       <input type="text" placeholder="Title" [(ngModel)]="data.title" name="title" disabled>
       <label>*changing of title is prohibited</label><br>
       <input type="text" placeholder="Author" [(ngModel)]="data.author" name="author" required><br>

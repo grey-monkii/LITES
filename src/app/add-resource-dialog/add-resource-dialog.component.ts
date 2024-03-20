@@ -54,7 +54,7 @@ export class AddResourceDialogComponent {
     const coverFile = this.resource.cover;
     let coverUrl = '';
     if (coverFile) {
-      const filePath = `covers/${new Date().getTime()}_${coverFile.name}`;
+      const filePath = `covers/${this.resource.title}`;
       const storageRef = this.storage.ref(filePath);
       await storageRef.put(coverFile);
       coverUrl = await storageRef.getDownloadURL().toPromise();

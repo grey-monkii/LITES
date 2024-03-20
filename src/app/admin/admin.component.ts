@@ -81,49 +81,40 @@ export class AdminComponent implements OnInit {
     });
   }
 
- onRowClick(resource: Resource): void {
-  const confirmDelete = window.confirm('Are you sure you want to delete this resource?');
-  if (confirmDelete) {
-    // Delete cover image from storage if it exists
-    if (resource.cover) {
-      // Upload cover image to Firebase Storage
-      const filePath = `covers/${new Date().getTime()}_${resource.cover.name}`;
-      const storageRef = this.storage.ref(filePath);
-      const uploadTask = this.storage.upload(filePath, resource.cover);
-
-      // Track upload progress
-      uploadTask.snapshotChanges().toPromise().then(() => {
-        // Get the URL of the uploaded image
-        storageRef.getDownloadURL().toPromise().then((url: string) => {
-          // Delete the cover image
-          storageRef.delete().toPromise().then(() => {
-            console.log('Cover image deleted successfully');
-            // Delete resource from Firestore
-            this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
-              console.log('Resource deleted successfully');
-            }).catch(error => {
-              console.error('Error deleting resource:', error);
-            });
+  onRowClick(resource: Resource): void {
+    const confirmDelete = window.confirm('Are you sure you want to delete this resource?');
+    if (confirmDelete) {
+      // Delete cover image from storage if it exists
+      if (resource.cover) {
+        // Construct file path using book title
+        const filePath = `covers/${resource.title}`;
+  
+        // Delete cover image from storage
+        const storageRef = this.storage.ref(filePath);
+        storageRef.delete().toPromise().then(() => {
+          console.log('Cover image deleted successfully');
+  
+          // Delete resource from Firestore
+          this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
+            console.log('Resource deleted successfully');
+            window.location.reload();
           }).catch(error => {
-            console.error('Error deleting cover image:', error);
+            console.error('Error deleting resource:', error);
           });
         }).catch(error => {
-          console.error('Error getting download URL:', error);
+          console.error('Error deleting cover image:', error);
         });
-      }).catch(error => {
-        console.error('Error uploading cover image:', error);
-      });
-    } else {
-      // Delete resource from Firestore if cover image doesn't exist
-      this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
-        console.log('Resource deleted successfully');
-      }).catch(error => {
-        console.error('Error deleting resource:', error);
-      });
+      } else {
+        // Delete resource from Firestore if cover image doesn't exist
+        this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
+          console.log('Resource deleted successfully');
+          window.location.reload();
+        }).catch(error => {
+          console.error('Error deleting resource:', error);
+        });
+      }
     }
   }
-}
-
   
 async logout() {
   try {

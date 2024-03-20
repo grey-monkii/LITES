@@ -1,0 +1,59 @@
+.dialog-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    max-height: 400px; /* Set max height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  label{
+    color: red;
+  }
+  
+  .dialog-container h2 {
+    margin-top: 0;
+  }
+  
+  .dialog-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dialog-container input[type="file"],
+  .dialog-container input[type="text"],
+  .dialog-container input[type="number"],
+  .dialog-container select,
+  .dialog-container textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0; /* Adjust the margin as needed */
+  }
+  
+  .dialog-container button[type="submit"] {
+    padding: 10px 20px;
+    background-color: maroon;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .dialog-container button[type="button"] {
+    padding: 10px 20px;
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .dialog-container button[type="button"]:hover {
+    background-color: grey;
+  }
+  
+  .dialog-container button[type="submit"]:hover {
+    background-color: gold;
+  }
+  

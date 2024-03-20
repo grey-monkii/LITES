@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog'; 
 import { AddResourceDialogComponent } from '../add-resource-dialog/add-resource-dialog.component';
+import { UpdateDeleteComponent } from '../update-delete/update-delete.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Resource } from '../../assets/resource.model';
 import { map } from 'rxjs/operators'; // Import the map operator
@@ -82,38 +83,14 @@ export class AdminComponent implements OnInit {
   }
 
   onRowClick(resource: Resource): void {
-    const confirmDelete = window.confirm('Are you sure you want to delete this resource?');
-    if (confirmDelete) {
-      // Delete cover image from storage if it exists
-      if (resource.cover) {
-        // Construct file path using book title
-        const filePath = `covers/${resource.title}`;
+    const dialogRef = this.dialog.open(UpdateDeleteComponent, {
+      width: '500px',
+      data: resource
+    });
   
-        // Delete cover image from storage
-        const storageRef = this.storage.ref(filePath);
-        storageRef.delete().toPromise().then(() => {
-          console.log('Cover image deleted successfully');
-  
-          // Delete resource from Firestore
-          this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
-            console.log('Resource deleted successfully');
-            window.location.reload();
-          }).catch(error => {
-            console.error('Error deleting resource:', error);
-          });
-        }).catch(error => {
-          console.error('Error deleting cover image:', error);
-        });
-      } else {
-        // Delete resource from Firestore if cover image doesn't exist
-        this.firestore.collection(resource.section).doc(resource.title).delete().then(() => {
-          console.log('Resource deleted successfully');
-          window.location.reload();
-        }).catch(error => {
-          console.error('Error deleting resource:', error);
-        });
-      }
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      window.location.reload();
+    });
   }
   
 async logout() {

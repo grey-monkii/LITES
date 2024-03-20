@@ -10,6 +10,5 @@ export interface Resource {
     shelf : string;
     level : string;
     searched: number;
-    editable : boolean;
   }
   

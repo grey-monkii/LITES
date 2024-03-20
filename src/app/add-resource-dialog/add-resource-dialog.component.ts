@@ -22,8 +22,9 @@ export class AddResourceDialogComponent {
     searched: 0,
     shelf: '',
     level: '',
-    editable: false,
   };
+
+  maxSizeError = false;
 
   constructor(
     private dialogRef: MatDialogRef<AddResourceDialogComponent>,
@@ -34,12 +35,32 @@ export class AddResourceDialogComponent {
   // Function to handle cover image selection
   onCoverSelected(event: any) {
     const file = event.target.files[0];
-    this.resource.cover = file;
+    if (file) {
+      // Check if file size exceeds 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        window.alert('File size exceeds 5MB. Please select a smaller file.');
+        this.maxSizeError = true;
+        this.resource.cover = null;
+        event.target.value = null; // Clear the selected file input
+      } else {
+        // Check if the file type is an image
+        const fileType = file.type.split('/')[0];
+        if (fileType !== 'image') {
+          window.alert('Only image files are allowed.');
+          this.resource.cover = null;
+          event.target.value = null; // Clear the selected file input
+        } else {
+          this.resource.cover = file;
+          this.maxSizeError = false;
+        }
+      }
+    }
   }
+  
 
   async addResource() {
        // Check if shelf and level are filled
-    if (!this.resource.shelf || !this.resource.level || !this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description) {
+    if (!this.resource.shelf || !this.resource.level || !this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description ||!this.resource.cover) {
         window.alert('Please provide all the required information.');
         return; // Stop execution if shelf or level is not filled
       }

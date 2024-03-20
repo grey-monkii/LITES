@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { HomeComponent } from './home/home.component';
 import { AddResourceDialogComponent } from './add-resource-dialog/add-resource-dialog.component';
+import { UpdateDeleteComponent } from './update-delete/update-delete.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddResourceDialogComponent } from './add-resource-dialog/add-resource-d
     LoginComponent,
     AdminComponent,
     HomeComponent,
-    AddResourceDialogComponent
+    AddResourceDialogComponent,
+    UpdateDeleteComponent
   ],
   imports: [
     BrowserModule,

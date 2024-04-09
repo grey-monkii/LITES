@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CardValService } from '../../assets/service/card-val.service';
+import { MatDialog } from '@angular/material/dialog';
+import { BookInfoComponent } from '../book-info/book-info.component';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { take, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -13,10 +18,18 @@ export class HomeComponent implements OnInit {
   searchInput: string = '';
   books$: Observable<any[]> | undefined;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore,
+              private db: AngularFireDatabase,
+              private cardVal: CardValService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    // this.checkAndDeleteData();
     this.fetchBooks();
+    this.cardVal.fetchData().subscribe(data => {
+      console.log(data);
+    });
+
   }
 
   fetchBooks(): void {
@@ -75,6 +88,18 @@ export class HomeComponent implements OnInit {
       // Implement action when user confirms
       console.log('Finding book using LITES:', book);
       // You can navigate to a different page or perform any other action here
+
+      // Open modal
+      const dialogRef = this.dialog.open(BookInfoComponent, {
+        data: book
+      });
+
+      // // Handle modal close
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('Modal closed:', result);
+      //   // Implement any action based on modal result
+      // });
+      
     } else {
       // Implement action when user cancels
       console.log('User cancelled search.');
@@ -95,5 +120,36 @@ export class HomeComponent implements OnInit {
     return this.searchInput.trim() !== '' && (books === null || this.filteredBooks(books).length === 0);
   }
   
-
+  
+  // async checkAndDeleteData() {
+  //   const sections = ['Fiction', 'General Reference', 'Periodicals', 'Subject Reference']; // Example section names
+  //   const shelves = ['Shelf A', 'Shelf B', 'Shelf C', 'Shelf D']; // Example shelf names
+  //   const levels = ['Level 1', 'Level 2', 'Level 3']; // Example level names
+  //   const colors = ['red', 'blue', 'green']; // Example color categories
+  
+  //   for (const section of sections) {
+  //     for (const shelf of shelves) {
+  //       for (const level of levels) {
+  //         for (const color of colors) {
+  //           const colorCategoryPath = `LITES/${section}/${shelf}/${level}/${color}`;
+  //           const colorData = await this.db.object(colorCategoryPath).valueChanges().pipe(take(1)).toPromise() as { state: boolean, timestamp: number, author: string, title: string, cardvalue: string };
+  
+  //           if (colorData && colorData.state) {
+  //             const currentTime = new Date().getTime();
+  //             const timestamp = colorData.timestamp;
+  
+  //             if (currentTime - timestamp >= 60000) { // 1 minute in milliseconds
+  //               // Reset state to false
+  //               await this.db.object(colorCategoryPath).update({ state: false });
+  
+  //               // Delete author, title, timestamp, and card value
+  //               await this.db.object(colorCategoryPath).update({ author: null, title: null, timestamp: null, cardvalue: null });
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+  
 }

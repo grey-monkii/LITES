@@ -9,3 +9,5 @@
     font-family:'Courier New', Courier, monospace;
     font-size: x-large;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

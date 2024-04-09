@@ -10,6 +10,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
+
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,10 @@ import { HomeComponent } from './home/home.component';
 import { AddResourceDialogComponent } from './add-resource-dialog/add-resource-dialog.component';
 import { UpdateDeleteComponent } from './update-delete/update-delete.component';
 import { RecoveryDialogComponent } from './recovery-dialog/recovery-dialog.component';
+import { CardValComponent } from './card-val/card-val.component';
+import { BookInfoComponent } from './book-info/book-info.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,9 @@ import { RecoveryDialogComponent } from './recovery-dialog/recovery-dialog.compo
     HomeComponent,
     AddResourceDialogComponent,
     UpdateDeleteComponent,
-    RecoveryDialogComponent
+    RecoveryDialogComponent,
+    CardValComponent,
+    BookInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +53,10 @@ import { RecoveryDialogComponent } from './recovery-dialog/recovery-dialog.compo
   exports: [
     AddResourceDialogComponent,
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    provideAnimationsAsync(),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -20,13 +20,13 @@
   <div class="book-container">
     <ng-container *ngIf="books$ | async as books">
       <ng-container *ngIf="!noSearchResults(books)">
-        <div class="book-card" *ngFor="let book of filteredBooksList">
+        <div class="book-card" *ngFor="let book of filteredBooksList" (click)="onCardClick(book)">
           <img [src]="book.cover" alt="Book Cover" class="book-picture">
           <div class="book-details">
             <div class="book-title">{{ book.title }}</div>
             <div class="book-author">{{ book.author }}</div>
             <div class="book-year">{{ book.year }}</div><br>
-            <a class="more-details" (click)="openBookOverviewDialog(book); $event.stopPropagation()">>> More Details</a>
+            <a class="more-details" (click)="openBookOverviewDialog(book)">>> More Details</a>
           </div>    
         </div>
       </ng-container>

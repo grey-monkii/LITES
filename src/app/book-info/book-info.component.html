@@ -1,10 +1,15 @@
-<h2>Book Information</h2>
-<div>
-  <p>Section: {{ book.section }}</p>
-  <p>{{ book.shelf }}</p>
-  <p>{{ book.level }}</p>
-  <p>Title: {{ book.title }}</p>
-  <p>Author: {{ book.author }}</p>
-  <h2>{{ readingId }}</h2>
+<div class="book-information">
+  <h2>Book Information</h2>
+  <div class="info-details">
+    <p><strong>Section:</strong> {{ book.section }}</p>
+    <p><strong>Shelf:</strong> {{ book.shelf }}</p>
+    <p><strong>Level:</strong> {{ book.level }}</p>
+    <p><strong>Title:</strong> {{ book.title }}</p>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+  </div>
+  <div class="id-container">
+    <div class="IDimg"><img src="assets/images/TapID.gif" alt="TapID"></div>
+    <h2>{{ readingId }}</h2>
+  </div>
+  <button mat-button (click)="onClose()">Close</button>
 </div>
-<button mat-button (click)="onClose()">Close</button>

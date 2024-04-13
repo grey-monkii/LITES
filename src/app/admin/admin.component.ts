@@ -31,7 +31,7 @@ export class AdminComponent implements OnInit {
   }
 
   fetchResourceInventory(): void {
-    const collections = ['General Reference', 'Fiction', 'Subject Reference', 'Periodicals'];
+    const collections = ['General Reference', 'Fiction', 'Subject Reference', 'Graduate School'];
   
     collections.forEach(collection => {
       this.firestore.collection(collection).valueChanges().pipe(

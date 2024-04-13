@@ -31,7 +31,7 @@
       <option value="General Reference">General Reference</option>
       <option value="Fiction">Fiction</option>
       <option value="Subject Reference">Subject Reference</option>
-      <option value="Periodicals">Periodical</option>
+      <option value="Graduate School">Graduate School</option>
     </select>
     <button class="add-resource-button" (click)="addResource()">Add Resource Material</button>
   </div>
@@ -43,11 +43,11 @@
           <th>Cover</th>
           <th>Title</th>
           <th>Author</th>
-          <th>ISBN</th>
+          <th>ISBN/Accession Number</th>
           <th>Year</th>
-          <th>Publication</th>
+          <th>Publication/Department</th>
           <th>Description</th>
-          <th>No. of Searches</th>
+          <th>Tags</th>
         </tr>
       </thead>
       <tbody>
@@ -61,7 +61,7 @@
           <td>{{ resource.year }}</td>
           <td>{{ resource.publication }}</td>
           <td>{{ resource.description }}</td>
-          <td>{{ resource.searched }}</td>
+          <td>{{ resource.tags }}</td>
         </tr>
       </tbody>      
     </table>

@@ -4,8 +4,8 @@
     <p>Library Information and Tracking Efficiency System</p>
     <div class="search-bar">
       <input type="text" class="search-input" placeholder="Search for resources" [(ngModel)]="searchInput">
-     
-    </div>
+      <button class="search-button" (click)="searchBooks()">Search</button>
+    </div>    
   </div>
   <div class="tabs">
     <ul>
@@ -13,24 +13,20 @@
       <li (click)="filterBooksByTab('General Reference')" [class.selected-tab]="selectedTab === 'General Reference'">General Reference</li>
       <li (click)="filterBooksByTab('Fiction')" [class.selected-tab]="selectedTab === 'Fiction'">Fiction</li>
       <li (click)="filterBooksByTab('Subject Reference')" [class.selected-tab]="selectedTab === 'Subject Reference'">Subject Reference</li>
-      <li (click)="filterBooksByTab('Periodicals')" [class.selected-tab]="selectedTab === 'Periodicals'">Periodicals</li>
+      <li (click)="filterBooksByTab('Graduate School')" [class.selected-tab]="selectedTab === 'Graduate School'">Graduate School</li>
     </ul>
   </div>
 
   <div class="book-container">
-    <ng-container *ngIf="books$ | async as books">
-      <div class="book-card" *ngFor="let book of filteredBooks(books)" (click)="onCardClick(book)">
+    <ng-container *ngIf="filteredBooksList">
+      <div class="book-card" *ngFor="let book of filteredBooksList" (click)="onCardClick(book)">
         <img [src]="book.cover" alt="Book Cover" class="book-picture">
         <div class="book-details">
           <div class="book-title">{{ book.title }}</div>
           <div class="book-author">{{ book.author }}</div>
-          <div class="book-year">{{ book.year }}</div>
-          <div class="book-publication">{{ book.publication }}</div>
-          <div class="book-description">{{ book.description }}</div>
-          <div class="book-isbn">ISBN: {{ book.isbn }}</div><br>
-          <div class="book-location">{{ book.section }}</div>
-          <div class="book-location">{{ book.shelf }}<br>{{ book.level }}</div>
-        </div>
+          <div class="book-year">{{ book.year }}</div><br>
+          <a class="more-details" (click)="openBookOverviewDialog(book); $event.stopPropagation()">>> More Details</a>
+        </div>    
       </div>
     </ng-container>
     <div *ngIf="noSearchResults(books$ | async)" class="no-results-message">

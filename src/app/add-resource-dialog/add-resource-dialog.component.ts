@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog'
 import { Resource } from '../../assets/resource.model';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { TagSelectionDialogComponent } from '../tag-selection-dialog/tag-selection-dialog.component';
 
 @Component({
   selector: 'app-add-resource-dialog',
@@ -22,6 +24,8 @@ export class AddResourceDialogComponent {
     searched: 0,
     shelf: '',
     level: '',
+    tags: [],
+   
   };
 
   maxSizeError = false;
@@ -29,7 +33,8 @@ export class AddResourceDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<AddResourceDialogComponent>,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private dialog: MatDialog
   ) {}
 
   // Function to handle cover image selection
@@ -57,10 +62,24 @@ export class AddResourceDialogComponent {
     }
   }
   
+  openTagSelectionDialog(): void {
+    const dialogRef = this.dialog.open(TagSelectionDialogComponent, {
+      width: '1200px', // Adjust width as needed
+      data: { selectedTags: this.resource.tags } // Pass current selected tags as data to the dialog
+    });
+
+    // Subscribe to dialog close event to get selected tags
+    dialogRef.afterClosed().subscribe((selectedTags: string[]) => {
+      if (selectedTags) {
+        this.resource.tags = selectedTags; // Update the resource tags with the selected tags
+      }
+    });
+  }
+
 
   async addResource() {
        // Check if shelf and level are filled
-    if (!this.resource.shelf || !this.resource.level || !this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description ||!this.resource.cover) {
+    if (!this.resource.shelf || !this.resource.level || !this.resource.section || !this.resource.title || !this.resource.author || !this.resource.isbn || !this.resource.year || !this.resource.publication || !this.resource.description ||!this.resource.cover||this.resource.tags.length == 0) {
         window.alert('Please provide all the required information.');
         return; // Stop execution if shelf or level is not filled
       }

@@ -1,13 +1,6 @@
 <div class="dialog-container">
     <h2>Update or Delete Resource</h2>
     <form (submit)="updateResource()">
-      <select [(ngModel)]="data.section" name="section" required>
-        <option value="" disabled>Select Section</option>
-        <option value="General Reference">General Reference</option>
-        <option value="Fiction">Fiction</option>
-        <option value="Subject Reference">Subject Reference</option>
-        <option value="Periodicals">Periodicals</option>
-      </select><br>
       <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" >
       <label *ngIf="!data.cover">Upload New Cover</label>
       <label *ngIf="data.cover">*ignore to retain current cover</label><br>      
@@ -18,6 +11,7 @@
       <input type="text" placeholder="Year" [(ngModel)]="data.year" name="year" required><br>
       <input type="text" placeholder="Publication" [(ngModel)]="data.publication" name="publication" required><br>
       <textarea placeholder="Description" [(ngModel)]="data.description" name="description" required></textarea><br>
+      <textarea type="text" placeholder="Tags" [value]="data.tags" name="tags" readonly (click)="openTagSelectionDialog()" required></textarea><br>
       <select [(ngModel)]="data.shelf" name="shelf" required>
         <option value="" disabled>Select Shelf</option>
         <option value="Shelf A">Shelf A</option>

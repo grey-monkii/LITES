@@ -1,0 +1,120 @@
+.container {
+    width: 95%; /* Use 95% width of the parent container */
+    margin: 20px auto; /* Add margin on top and bottom */
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
+    align-items: center; /* Align items to the center horizontally */
+    overflow-x: hidden;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.search-container {
+    margin-bottom: 10px;
+    width: 100%; /* Ensure full width */
+}
+
+.search-input {
+    width: calc(100% - 20px); /* Adjust width to accommodate padding */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.alphabet-nav {
+    margin-top: 20px; /* Add some top margin for spacing */
+    margin-bottom: 10px; /* Add margin on bottom */
+}
+
+.alphabet-container {
+    display: flex; /* Display alphabet letters horizontally */
+    flex-wrap: nowrap; /* Allow wrapping */
+    gap: 5px; /* Gap between letters */
+}
+
+
+.alphabet-letter {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.alphabet-letter.selected {
+    text-decoration: underline;
+    color: maroon;
+}
+
+.tag-list {
+    width: 100%; /* Use full width of the container */
+    padding: 10px; /* Add some padding */
+    max-height: 300px; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 10px; /* Add margin on top */
+    margin-bottom: 20px; /* Add margin on bottom */
+    overflow-y: auto;
+}
+
+.tag-list::-webkit-scrollbar {
+    display: none;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tag-section {
+    flex: 1; /* Take up equal space */
+}
+
+.tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent tag text from wrapping */
+}
+
+.tag.selected {
+    background-color: maroon;
+    color: #ffffff;
+}
+
+.button-container {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Add some bottom margin */
+    display: flex;
+    justify-content: center;
+}
+
+.apply-button, .cancel-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.apply-button {
+    background-color: gold;
+    color: #ffffff;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #ffffff;
+}

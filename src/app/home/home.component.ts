@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { CardValService } from '../../assets/service/card-val.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BookInfoComponent } from '../book-info/book-info.component';
+import { BookOverviewDialogComponent } from '../book-overview-dialog/book-overview-dialog.component';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { take, delay } from 'rxjs/operators';
 
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   selectedTab: string = 'All Books';
   searchInput: string = '';
   books$: Observable<any[]> | undefined;
+  filteredBooksList: any[] = [];
 
   constructor(private firestore: AngularFirestore,
               private db: AngularFireDatabase,
@@ -24,16 +26,16 @@ export class HomeComponent implements OnInit {
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    // this.checkAndDeleteData();
     this.fetchBooks();
     this.cardVal.fetchData().subscribe(data => {
       console.log(data);
     });
 
+    this.filterBooksByTab('All Books');
   }
 
   fetchBooks(): void {
-    const collections = ['General Reference', 'Fiction', 'Subject Reference', 'Periodicals'];
+    const collections = ['General Reference', 'Fiction', 'Subject Reference', 'Graduate School'];
     const collectionObservables = collections.map(collection =>
       this.firestore.collection(collection).valueChanges()
     );
@@ -45,38 +47,68 @@ export class HomeComponent implements OnInit {
 
   filterBooksByTab(tab: string): void {
     this.selectedTab = tab;
+    this.filterBooks();
+  }
+
+  filterBooks(): void {
+    if (this.books$) {
+      this.books$.subscribe(books => {
+        this.filteredBooksList = this.filteredBooks(books);
+      });
+    }
   }
 
   filteredBooks(books: any[]): any[] {
     if (this.selectedTab === 'All Books') {
-      return books.filter(book =>
-        (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
-      );
+      return books;
     } else {
-      return books.filter(book =>
-        book.section === this.selectedTab &&
-        (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-        book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
-      );
+      return books.filter(book => book.section === this.selectedTab);
     }
   }
+
+  searchBooks(): void {
+    if (this.books$) {
+      this.books$.subscribe(books => {
+        if (this.searchInput.trim() === '') {
+          this.filteredBooksList = this.filteredBooks(books);
+        } else {
+          this.filteredBooksList = books.filter(book =>
+            (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            (Array.isArray(book.tags) && book.tags.some((tag: string) => tag.toLowerCase().includes(this.searchInput.toLowerCase())))||
+            book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
+            book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
+          );
+        }
+      });
+    }
+  }
+
+  openBookOverviewDialog(bookData: any): void {
+    const bookDetails = {
+      
+      title: bookData.title,
+      author: bookData.author,
+      description: bookData.description,
+      tags: bookData.tags,
+      year: bookData.year,
+      isbn: bookData.isbn,
+      level: bookData.level,
+      shelf: bookData.shelf,
+      publication: bookData.publication,
+      section: bookData.section,
+      cover: bookData.cover
+    };
   
-  
+    const dialogRef = this.dialog.open(BookOverviewDialogComponent, {
+      data: { book: bookDetails } // Pass the book details to the dialog
+    });
+  }
 
   onCardClick(book: any): void {
     // Display confirmation dialog
@@ -107,7 +139,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  
   updateSearchCount(book: any): void {
     // Update the "searched" field in Firestore based on the book's location
     const bookRef = this.firestore.collection(book.section).doc(book.title); // Assuming "location" is the collection name and "id" is the document ID
@@ -117,12 +148,14 @@ export class HomeComponent implements OnInit {
   }
 
   noSearchResults(books: any[] | null): boolean {
-    return this.searchInput.trim() !== '' && (books === null || this.filteredBooks(books).length === 0);
+    return this.searchInput.trim() !== '' && (books === null || this.filteredBooksList.length === 0);
   }
-  
+}
+
+
   
   // async checkAndDeleteData() {
-  //   const sections = ['Fiction', 'General Reference', 'Periodicals', 'Subject Reference']; // Example section names
+  //   const sections = ['Fiction', 'General Reference', 'Graduate School', 'Subject Reference']; // Example section names
   //   const shelves = ['Shelf A', 'Shelf B', 'Shelf C', 'Shelf D']; // Example shelf names
   //   const levels = ['Level 1', 'Level 2', 'Level 3']; // Example level names
   //   const colors = ['red', 'blue', 'green']; // Example color categories
@@ -152,4 +185,4 @@ export class HomeComponent implements OnInit {
   //   }
   // }
   
-}
+

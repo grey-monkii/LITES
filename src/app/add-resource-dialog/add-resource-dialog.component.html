@@ -6,15 +6,16 @@
         <option value="General Reference">General Reference</option>
         <option value="Fiction">Fiction</option>
         <option value="Subject Reference">Subject Reference</option>
-        <option value="Periodicals">Periodicals</option>
+        <option value="Graduate School">Graduate School</option>
       </select><br>
       <input type="file" accept="image/*" (change)="onCoverSelected($event)" name="cover" required><br>
       <input type="text" placeholder="Title" [(ngModel)]="resource.title" name="title" required><br>
       <input type="text" placeholder="Author" [(ngModel)]="resource.author" name="author" required><br>
-      <input type="text" placeholder="ISBN" [(ngModel)]="resource.isbn" name="isbn" required><br>
+      <input type="text" placeholder="ISBN/Accession Number" [(ngModel)]="resource.isbn" name="isbn" required><br>
       <input type="text" placeholder="Year" [(ngModel)]="resource.year" name="year" required><br>
-      <input type="text" placeholder="Publication" [(ngModel)]="resource.publication" name="publication" required><br>
+      <input type="text" placeholder="Publication/Department" [(ngModel)]="resource.publication" name="publication" required><br>
       <textarea placeholder="Description" [(ngModel)]="resource.description" name="description" required></textarea><br>
+      <textarea type="text" placeholder="Tags" [value]="resource.tags.join(', ')" name="tags" readonly (click)="openTagSelectionDialog()" required></textarea><br>
       <select [(ngModel)]="resource.shelf" name="shelf" required>
         <option value="" disabled>Select Shelf</option>
         <option value="Shelf A">Shelf A</option>
@@ -35,7 +36,9 @@
         <option value="Level 3">Level 3</option>
         <option value="Level 4">Level 4</option>
       </select><br>
+      
       <button type="submit">Add</button>
     </form>
+    
   </div>
   

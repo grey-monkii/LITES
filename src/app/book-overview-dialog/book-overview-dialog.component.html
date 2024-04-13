@@ -1,0 +1,26 @@
+<div class="book-overview">
+    <div class="header">
+      <h2>Book Overview</h2>
+    </div>
+    <div class="content">
+      <!-- Cover Image -->
+      <div class="cover">
+        <img [src]="book.cover" alt="Book Cover" class="cover">
+      </div>
+      <!-- Title -->
+      <div class="title">
+        <h3>{{ book.title }}</h3>
+      </div>
+      <!-- Other Details -->
+      <div class="details">
+        <p><strong>Author:</strong> {{ book.author }}</p>
+        <p><strong>Description:</strong> {{ book.description }}</p>
+        <p><strong>Tags:</strong> {{ book.tags }}</p>
+        <p><strong>Year:</strong> {{ book.year }}</p>
+        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+        <p><strong>Publication:</strong> {{ book.publication }}</p>
+        <p><strong>Location :</strong> {{ book.section }}, {{ book.shelf }}, {{ book.level }}</p>
+      </div>
+    </div>
+  </div>
+  

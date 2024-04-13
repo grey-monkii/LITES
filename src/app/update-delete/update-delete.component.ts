@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Resource } from './../../assets/resource.model'; // Replace 'Resource' with your resource model
 import { AngularFireStorage } from '@angular/fire/compat/storage'; // Import AngularFireStorage if you're using Firebase Storage
 import { AngularFirestore } from '@angular/fire/compat/firestore'; // Import AngularFirestore if you're using Firestore
+import { TagSelectionDialogComponent } from '../tag-selection-dialog/tag-selection-dialog.component';
 
 @Component({
   selector: 'app-update-delete',
@@ -15,7 +16,8 @@ export class UpdateDeleteComponent implements OnInit {
     public dialogRef: MatDialogRef<UpdateDeleteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Resource,
     private storage: AngularFireStorage, // Inject AngularFireStorage
-    private firestore: AngularFirestore // Inject AngularFirestore
+    private firestore: AngularFirestore, // Inject AngularFirestore
+    private dialog : MatDialog
   ) {}
 
   maxSizeError = false;
@@ -48,7 +50,7 @@ export class UpdateDeleteComponent implements OnInit {
 
   updateResource(): void {
     // Check if shelf and level are filled
-    if (!this.data.shelf || !this.data.level || !this.data.section || !this.data.title || !this.data.author || !this.data.isbn || !this.data.year || !this.data.publication || !this.data.description) {
+    if (!this.data.shelf || !this.data.level || !this.data.section || !this.data.title || !this.data.author || !this.data.isbn || !this.data.year || !this.data.publication || !this.data.description || this.data.tags.length == 0) {
       window.alert('Please provide all the required information.');
       return; // Stop execution if any required information is missing
     }
@@ -77,6 +79,19 @@ export class UpdateDeleteComponent implements OnInit {
   
     // Close the dialog
     this.dialogRef.close();
+  }
+  openTagSelectionDialog(): void {
+    const dialogRef = this.dialog.open(TagSelectionDialogComponent, {
+      width: '1200px', // Adjust width as needed
+      data: { selectedTags: this.data.tags } // Pass current selected tags as data to the dialog
+    });
+
+    // Subscribe to dialog close event to get selected tags
+    dialogRef.afterClosed().subscribe((selectedTags: string[]) => {
+      if (selectedTags) {
+        this.data.tags = selectedTags; // Update the resource tags with the selected tags
+      }
+    });
   }
   
 

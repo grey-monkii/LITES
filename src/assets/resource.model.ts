@@ -1,4 +1,5 @@
 export interface Resource {
+    tags: string[];
     section : string;
     cover: File | null; // URL for the cover image
     title: string;
@@ -10,5 +11,6 @@ export interface Resource {
     shelf : string;
     level : string;
     searched: number;
+  
   }
   

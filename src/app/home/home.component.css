@@ -37,7 +37,7 @@ body {
   }
   
   .search-button {
-    padding: 12px 100px; /* Increased padding */
+    padding: 12px 200px; /* Increased padding */
     border: none;
     border-start-end-radius: 0px 10px;
     background-color: gold;
@@ -88,6 +88,17 @@ body {
     margin: 10px;
     width: 300px;
   }
+  .search-button {
+    padding: 12px 150px; /* Adjust padding */
+    border: none;
+    border-radius: 0 5px 5px 0; /* Adjust border radius */
+    background-color: gold;
+    color: maroon;
+    cursor: pointer;
+    font-size: x-large; /* Adjust font size */
+    font-weight: bolder;
+  }
+  
   
   .book-picture {
     width: 100%;
@@ -104,20 +115,25 @@ body {
   }
   
   .book-author,
-  .book-year,
-  .book-publication,
-  .book-description,
-  .book-isbn
+  .book-year
   {
     margin-top: 5px;
     color: maroon;
   }
 
-  .book-location {
+  .more-details {
     margin-top: 5px;
     color: maroon;
     font-size: medium; /* Make the font smaller */
     font-family: 'Arial', sans-serif; /* Use a different font */
+    transition: color 0.3s; /* Add a smooth transition effect for color change */
+    text-decoration: none; /* Remove underline by default */
+}
+
+.more-details:hover {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .no-results-message{

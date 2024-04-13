@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="tag-list">
+        <h2>Search Tags</h2>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search tags..." [(ngModel)]="searchInput" (input)="filterTags()">
+        </div>
+
+        <h2>Select Tags</h2>
+        <div class="alphabet-nav">
+            <div class="alphabet-container">
+                <span *ngFor="let letter of alphabet" (click)="scrollToSection(letter)" class="alphabet-letter" [class.selected]="selectedLetter === letter">{{ letter }}</span>
+            </div>
+        </div>
+        <div class="tag-container">
+            <div *ngFor="let section of tagSections">
+                <div class="tag-section" #sectionId [id]="section.section">
+                    <h3>{{ section.section }}</h3>
+                    <div class="tags-row">
+                        <div *ngFor="let tag of section.tags" class="tag" [class.selected]="isSelected(tag)" (click)="toggleTag(tag)">
+                            {{ tag }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button class="apply-button" (click)="applyTags()">Apply</button>
+        <button class="cancel-button" (click)="closeDialog()">Cancel</button>
+    </div>
+</div>

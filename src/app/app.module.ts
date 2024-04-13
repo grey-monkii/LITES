@@ -24,6 +24,8 @@ import { CardValComponent } from './card-val/card-val.component';
 import { BookInfoComponent } from './book-info/book-info.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { DatePipe } from '@angular/common';
+import { TagSelectionDialogComponent } from './tag-selection-dialog/tag-selection-dialog.component';
+import { BookOverviewDialogComponent } from './book-overview-dialog/book-overview-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { DatePipe } from '@angular/common';
     UpdateDeleteComponent,
     RecoveryDialogComponent,
     CardValComponent,
-    BookInfoComponent
+    BookInfoComponent,
+    TagSelectionDialogComponent,
+    BookOverviewDialogComponent
   ],
   imports: [
     BrowserModule,

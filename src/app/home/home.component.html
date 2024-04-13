@@ -18,19 +18,21 @@
   </div>
 
   <div class="book-container">
-    <ng-container *ngIf="filteredBooksList">
-      <div class="book-card" *ngFor="let book of filteredBooksList" (click)="onCardClick(book)">
-        <img [src]="book.cover" alt="Book Cover" class="book-picture">
-        <div class="book-details">
-          <div class="book-title">{{ book.title }}</div>
-          <div class="book-author">{{ book.author }}</div>
-          <div class="book-year">{{ book.year }}</div><br>
-          <a class="more-details" (click)="openBookOverviewDialog(book); $event.stopPropagation()">>> More Details</a>
-        </div>    
+    <ng-container *ngIf="books$ | async as books">
+      <ng-container *ngIf="!noSearchResults(books)">
+        <div class="book-card" *ngFor="let book of filteredBooksList">
+          <img [src]="book.cover" alt="Book Cover" class="book-picture">
+          <div class="book-details">
+            <div class="book-title">{{ book.title }}</div>
+            <div class="book-author">{{ book.author }}</div>
+            <div class="book-year">{{ book.year }}</div><br>
+            <a class="more-details" (click)="openBookOverviewDialog(book); $event.stopPropagation()">>> More Details</a>
+          </div>    
+        </div>
+      </ng-container>
+      <div *ngIf="noSearchResults(books)" class="no-results-message">
+        The material you are searching for is not available or does not exist. Please try another keyword.
       </div>
     </ng-container>
-    <div *ngIf="noSearchResults(books$ | async)" class="no-results-message">
-      The material you are searching is not available or does not exist. Please try another keyword.
-    </div>
   </div>
 </div>

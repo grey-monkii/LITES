@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   searchInput: string = '';
   books$: Observable<any[]> | undefined;
   filteredBooksList: any[] = [];
+  
 
   constructor(private firestore: AngularFirestore,
               private db: AngularFireDatabase,
@@ -47,7 +48,15 @@ export class HomeComponent implements OnInit {
 
   filterBooksByTab(tab: string): void {
     this.selectedTab = tab;
-    this.filterBooks();
+    
+    // Check if search input is empty
+    if (this.searchInput.trim() === '') {
+      // If search input is empty, display all books from the active tab
+      this.filterBooks();
+    } else {
+      // If search input is not empty, filter books based on the active tab and search input
+      this.searchBooks();
+    }
   }
 
   filterBooks(): void {
@@ -67,27 +76,83 @@ export class HomeComponent implements OnInit {
   }
 
   searchBooks(): void {
+    // Define a list of stop words
+    const stopWords = ['a', 'an', 'the', 'and', 'or', 'but', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'by', 'about', 'as'];
     if (this.books$) {
       this.books$.subscribe(books => {
         if (this.searchInput.trim() === '') {
+          // If search input is empty, display all books from the active tab
           this.filteredBooksList = this.filteredBooks(books);
         } else {
-          this.filteredBooksList = books.filter(book =>
-            (book.title.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.author.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.description.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            (Array.isArray(book.tags) && book.tags.some((tag: string) => tag.toLowerCase().includes(this.searchInput.toLowerCase())))||
-            book.year.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.isbn.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.level.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.shelf.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.publication.toLowerCase().includes(this.searchInput.toLowerCase()) ||
-            book.section.toLowerCase().includes(this.searchInput.toLowerCase()))
-          );
+          // Tokenize search input and remove stop words
+          const searchTokens = this.searchInput.toLowerCase().split(' ').filter(token => !stopWords.includes(token));
+  
+          // Filter books based on the active tab
+          const filteredBooksByTab = this.filteredBooks(books);
+  
+          // Filter books based on search input and the active tab
+          const scoredBooks = filteredBooksByTab.map(book => ({
+            ...book,
+            score: this.calculateScore(book, searchTokens)
+          }));
+  
+          // Sort books by score in descending order
+          const sortedBooks = scoredBooks.sort((a, b) => b.score - a.score);
+  
+          // Separate main filtered books and related books
+          const mainFilteredBooks = sortedBooks.filter(book => book.score >= 50);
+          const otherRelatedBooks = sortedBooks.filter(book => book.score < 50);
+  
+          // Concatenate main filtered books with related books
+          this.filteredBooksList = [...mainFilteredBooks, ...otherRelatedBooks];
         }
       });
     }
   }
+  
+
+calculateScore(book: any, searchTokens: string[]): number {
+  let score = 0;
+
+  // Increment score based on the presence of search tokens in different fields
+  searchTokens.forEach(token => {
+    if (book.title.toLowerCase().includes(token)) {
+      score += 20;
+    }
+    if (book.author.toLowerCase().includes(token)) {
+      score += 15;
+    }
+    if (book.description.toLowerCase().includes(token)) {
+      score += 10;
+    }
+    if (Array.isArray(book.tags) && book.tags.some((tag: string) => tag.toLowerCase().includes(token))) {
+      score += 5;
+    }
+    if (book.year.toLowerCase().includes(token)) {
+      score += 3;
+    }
+    if (book.isbn.toLowerCase().includes(token)) {
+      score += 2;
+    }
+    if (book.level.toLowerCase().includes(token)) {
+      score += 2;
+    }
+    if (book.shelf.toLowerCase().includes(token)) {
+      score += 2;
+    }
+    if (book.publication.toLowerCase().includes(token)) {
+      score += 2;
+    }
+    if (book.section.toLowerCase().includes(token)) {
+      score += 2;
+    }
+  });
+
+  return score;
+}
+
+  
+  
 
   openBookOverviewDialog(bookData: any): void {
     const bookDetails = {

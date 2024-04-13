@@ -17,9 +17,11 @@
         <p><strong>Description:</strong> {{ book.description }}</p>
         <p><strong>Tags:</strong> {{ book.tags }}</p>
         <p><strong>Year:</strong> {{ book.year }}</p>
-        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
-        <p><strong>Publication:</strong> {{ book.publication }}</p>
-        <p><strong>Location :</strong> {{ book.section }}, {{ book.shelf }}, {{ book.level }}</p>
+        <!-- Conditional rendering for ISBN or Accession Number -->
+        <p><strong>{{ book.section === 'Graduate School' ? 'Accession Number' : 'ISBN' }}:</strong> {{ book.isbn }}</p>
+        <!-- Conditional rendering for Publication or Department -->
+        <p><strong>{{ book.section === 'Graduate School' ? 'Department' : 'Publication' }}:</strong> {{ book.publication }}</p>
+        <p><strong>Location:</strong> {{ book.section }}, {{ book.shelf }}, {{ book.level }}</p>
       </div>
     </div>
   </div>

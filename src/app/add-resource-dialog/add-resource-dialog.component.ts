@@ -21,7 +21,6 @@ export class AddResourceDialogComponent {
     year: null,
     publication: '',
     description: '',
-    searched: 0,
     shelf: '',
     level: '',
     tags: [],

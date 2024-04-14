@@ -26,6 +26,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { DatePipe } from '@angular/common';
 import { TagSelectionDialogComponent } from './tag-selection-dialog/tag-selection-dialog.component';
 import { BookOverviewDialogComponent } from './book-overview-dialog/book-overview-dialog.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BookOverviewDialogComponent } from './book-overview-dialog/book-overvie
     CardValComponent,
     BookInfoComponent,
     TagSelectionDialogComponent,
-    BookOverviewDialogComponent
+    BookOverviewDialogComponent,
+    AnalyticsComponent
   ],
   imports: [
     BrowserModule,

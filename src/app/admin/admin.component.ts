@@ -18,6 +18,8 @@ export class AdminComponent implements OnInit {
   filteredResources: Resource[] = [];
   selectedSection: string = 'All';
   searchQuery: string = '';
+  expandedDescription: { [key: string]: boolean } = {}; // Track expanded state for each resource
+
 
   constructor(
     public dialog: MatDialog,
@@ -92,6 +94,15 @@ export class AdminComponent implements OnInit {
       window.location.reload();
     });
   }
+  
+  toggleDescription(resource: Resource): void {
+    this.expandedDescription[resource.title] = !this.expandedDescription[resource.title];
+  }
+  
+  isDescriptionExpanded(resource: Resource): boolean {
+    return this.expandedDescription[resource.title] || false;
+  }
+  
   
 async logout() {
   try {

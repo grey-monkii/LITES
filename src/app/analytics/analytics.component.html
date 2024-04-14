@@ -1,0 +1,77 @@
+<div class="header">
+    <img src="assets/images/LITES Logo without Text Border.png" alt="LITES Logo" class="logo">
+    <h1 class="title">Resource Analytics</h1>
+  </div>
+  
+  <div class="STcontainer">
+    <nav class="side_navbar">
+      <ul class="ul2">
+        <li><a routerLink="/admin">
+            <img src="assets/images/book-icon.png" alt="" class="icon-size">
+            <span class="nav-item">Resources</span>
+        </a></li>
+        <li><a routerLink="/analytics">
+            <img src="assets/images/analytics-icon.png" alt="" class="icon-size">
+            <span class="nav-item">Analytics</span>
+        </a></li>
+        <li><a href="javascript:void(0)" (click)="logout()">
+          <img src="assets/images/logout-icon.png" alt="" class="icon-size">
+          <span class="nav-item">Logout</span>
+      </a></li>    
+      </ul>
+    </nav>
+  </div>
+
+
+<!-- analytics.component.html -->
+<!-- analytics.component.html -->
+<div class="analytics-container">
+    <div class="controls">
+      <select [(ngModel)]="selectedDataType" (change)="fetchAnalyticsData()">
+        <option value="terms">Searched Terms</option>
+        <option value="books">Searched Books</option>
+      </select>
+      <select [(ngModel)]="selectedDateRange" (change)="filterByDateRange($event)">
+        <option value="Today">Today</option>
+        <option value="Past Week">Past Week</option>
+        <option value="Past Month">Past Month</option>
+        <option value="Past 6 Months">Past 6 Months</option>
+      </select>
+      <button (click)="toggleSortOrder()">Toggle Sort Order</button>
+    </div>
+    <div class="analytics-graph">
+      <!-- Display analytics data as horizontal bars -->
+      <div class="bar" *ngFor="let item of analyticsData; let i = index" 
+           [style.width.%]="calculateBarWidth(item.numTimesSearched)"
+           [style.backgroundColor]="getBarColor(i)">
+        <span class="bar-text">{{ selectedDataType === 'books' ? item.title : item.term }} - {{ item.numTimesSearched }}</span>
+      </div>
+    </div>
+    <div class="analysis">
+        <!-- Display total number of searches -->
+        <p><strong>Total Number of Searches: </strong>{{ totalSearches }}</p>
+      </div>
+      
+      <div class="analysis">
+        <!-- Display number of unique terms or books -->
+        <p><strong>Number of Unique {{ selectedDataType === 'terms' ? 'Terms' : 'Books' }}: </strong>{{ uniqueTermsOrBooks }}</p>
+      </div>
+      
+      <div class="analysis">
+        <!-- Display most searched term or book -->
+        <p><strong>Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedItem?.title || 'N/A' }}</p>
+      </div>
+      
+      <div class="analysis">
+        <!-- Display searches for most searched term or book -->
+        <p><strong>Searches for Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedItem?.numTimesSearched || 'N/A' }}</p>
+      </div>
+      
+      <div class="analysis">
+        <!-- Display percentage of most searched term or book compared to other searches -->
+        <p><strong>Percentage of Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedPercentage ? mostSearchedPercentage.toFixed(2) + '%' : 'N/A' }}</p>
+      </div>      
+      
+  </div>
+
+  

@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookInfoComponent } from '../book-info/book-info.component';
 import { BookOverviewDialogComponent } from '../book-overview-dialog/book-overview-dialog.component';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AnalyticsService } from '../../assets/service/analytics.service';
 import { take, delay } from 'rxjs/operators';
 
 @Component({
@@ -24,7 +25,10 @@ export class HomeComponent implements OnInit {
   constructor(private firestore: AngularFirestore,
               private db: AngularFireDatabase,
               private cardVal: CardValService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private analyticsService: AnalyticsService) 
+              { }
+              
 
   ngOnInit(): void {
     this.fetchBooks();
@@ -105,6 +109,7 @@ export class HomeComponent implements OnInit {
   
           // Concatenate main filtered books with related books
           this.filteredBooksList = [...mainFilteredBooks, ...otherRelatedBooks];
+          this.analyticsService.updateSearchTermsAnalytics(this.searchInput);
         }
       });
     }
@@ -173,11 +178,11 @@ calculateScore(book: any, searchTokens: string[]): number {
     const dialogRef = this.dialog.open(BookOverviewDialogComponent, {
       data: { book: bookDetails } // Pass the book details to the dialog
     });
+    this.analyticsService.updateSearchedBooksAnalytics(bookData.title);
   }
 
   onCardClick(book: any): void {
     // Display confirmation dialog
-    this.updateSearchCount(book); //increment searched field
     const confirmSearch = window.confirm('Do you want to find this book using LITES?');
   
     // Check user's response
@@ -196,6 +201,7 @@ calculateScore(book: any, searchTokens: string[]): number {
       //   console.log('Modal closed:', result);
       //   // Implement any action based on modal result
       // });
+      this.analyticsService.updateSearchedBooksAnalytics(book.title);
       
     } else {
       // Implement action when user cancels
@@ -204,13 +210,7 @@ calculateScore(book: any, searchTokens: string[]): number {
     }
   }
 
-  updateSearchCount(book: any): void {
-    // Update the "searched" field in Firestore based on the book's location
-    const bookRef = this.firestore.collection(book.section).doc(book.title); // Assuming "location" is the collection name and "id" is the document ID
-    bookRef.update({ searched: (book.searched || 0) + 1 })
-      .then(() => console.log('Search count updated successfully'))
-      .catch(error => console.error('Error updating search count:', error));
-  }
+
 
   noSearchResults(books: any[] | null): boolean {
     return this.searchInput.trim() !== '' && (books === null || this.filteredBooksList.length === 0);

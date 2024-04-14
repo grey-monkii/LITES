@@ -1,0 +1,138 @@
+/* analytics.component.css */
+.header {
+    background-color: maroon;
+    color: white;
+    display: flex;
+    justify-content: flex-start; /* Align horizontally with the logo */
+    align-items: center;
+    padding: 10px;
+  }
+  
+  
+  .logo {
+    width: 100px; /* Adjust size as needed */
+  }
+  
+  .title {
+    color: white;
+    margin-left: 20px; /* Adjust margin to create space between logo and title */
+  }
+/* Container for analytics */
+.analytics-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Controls section */
+  .controls {
+    margin-bottom: 20px;
+  }
+  
+  .controls select,
+  .controls button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  /* Horizontal bar graph */
+  .analytics-graph {
+    width: 100%;
+    max-width: 800px; /* Adjust maximum width as needed */
+  }
+  
+  .bar {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+  .bar span {
+    margin-right: 10px;
+  }
+  
+  .bar-text{
+    color: white;
+  }
+  /* Analysis section */
+  .analysis {
+    width: 100%;
+    max-width: 800px; /* Adjust maximum width as needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+
+
+
+/* Side Navbar */
+.ul2 {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .STcontainer {
+    display: flex;
+    height: 25px;
+    flex-direction: row;
+  }
+  
+  .side_navbar {
+    position: absolute;
+    top: 150px;
+    bottom: 0;
+    /* height: 100vh; */
+    left: 0;
+    background: maroon;
+    width: 60px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ul2 a {
+    position: relative;
+    color: white;
+    font-size: 16px;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    width: 300px;
+    padding: 6px;
+  }
+  
+  .ul2 a:hover {
+    background: #ff6a00;
+    cursor: pointer;
+    color: #fff016;
+    text-shadow: 0px 0px 5px black;
+  }
+  
+  .ul2 a:hover img {
+    filter: invert(12%) sepia(81%) saturate(10000%) hue-rotate(355deg) brightness(88%) contrast(116%) drop-shadow(0px 0px 5px white);
+  }
+  
+  .side_navbar:hover {
+    width: 250px;
+    transition: all 0.5s ease;
+  }
+  
+  .icon-size {
+    height: 50px;
+  }
+  
+  .nav-item {
+    padding-left: 15px;
+  }
+  
+  .side_navbar_separator {
+    height: auto;
+  }

@@ -11,7 +11,7 @@
           <img src="assets/images/book-icon.png" alt="" class="icon-size">
           <span class="nav-item">Resources</span>
       </a></li>
-      <li><a routerLink="/superadmin-customer">
+      <li><a routerLink="/analytics">
           <img src="assets/images/analytics-icon.png" alt="" class="icon-size">
           <span class="nav-item">Analytics</span>
       </a></li>
@@ -60,7 +60,13 @@
           <td>{{ resource.isbn }}</td>
           <td>{{ resource.year }}</td>
           <td>{{ resource.publication }}</td>
-          <td>{{ resource.description }}</td>
+          <td>
+            <div (click)="toggleDescription(resource)">
+              {{ isDescriptionExpanded(resource) ? resource.description : (resource.description.length > 50 ? resource.description.substring(0, 50) + '...' : resource.description) }}
+            </div><br>
+            <span *ngIf="resource.description.length > 50 && !isDescriptionExpanded(resource)" class="expand" (click)="toggleDescription(resource);$event.stopPropagation()"> Expand >></span>
+            <span *ngIf="isDescriptionExpanded(resource)" class="collapse" (click)="toggleDescription(resource);$event.stopPropagation()"> Collapse <<</span>
+          </td>          
           <td>{{ resource.tags }}</td>
         </tr>
       </tbody>      

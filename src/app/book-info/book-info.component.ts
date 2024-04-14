@@ -32,6 +32,7 @@ export class BookInfoComponent implements OnInit {
         setTimeout(() => {
           this.moveData(cardValue);
         }, 3000);
+        
       } else {
         this.readingId = "Tap ID to locate book";
       }
@@ -44,54 +45,91 @@ export class BookInfoComponent implements OnInit {
   
     const colorCategories = ['red', 'blue', 'green'];
   
+    let selectedColor = null;
+  
+    // Loop through color categories to find an available one
     for (const color of colorCategories) {
       const colorCategoryPath = `${targetPath}/${color}`;
-      console.log('It is saved in' + colorCategoryPath);
-      const colorData = await this.db.object(colorCategoryPath).valueChanges().pipe(take(1)).toPromise() as { state: boolean, timestamp: number };
+      const colorData = await this.db.object(colorCategoryPath).valueChanges().pipe(take(1)).toPromise() as { state: boolean, author?: string, title?: string };
   
       if (colorData && !colorData.state) {
-        const currentTime = new Date().getTime();
-        const currentTimeStamp = new Date();
-        const formattedTimeStamp = this.datePipe.transform(currentTimeStamp, 'medium', 'GMT+8');
+        selectedColor = color;
+        break;
+      }
   
-        const newData = { cardvalue: cardValue, timecode: currentTime, state: true, title: title, author: author, timestamp: formattedTimeStamp};
-  
-        await this.db.object(colorCategoryPath).update(newData);
-        
-        // After updating the state and saving the card value, remove the cardValue from readCard
-        this.db.object(`LITES/readCard`).remove().then(() => {
-          console.log('Card value removed from readCard successfully.');
-        }).catch(error => {
-          console.error('Error removing card value from readCard:', error);
-        });
-
-        setTimeout(async () => {
-          const updatedColorData = await this.db.object(colorCategoryPath).valueChanges().pipe(take(1)).toPromise() as { state: boolean, timecode: number };
-  
-          if (updatedColorData && updatedColorData.state) {
-            const elapsedTime = new Date().getTime() - updatedColorData.timecode;
-            if (elapsedTime >= 60000) { // 1 minute in milliseconds
-              await this.db.object(colorCategoryPath).remove().then(() => {
-                console.log('Fields deleted.');
-              }).catch(error => {
-                console.error('Can\'t delete fields', error);
-              });
-      
-              await this.db.object(colorCategoryPath).update({ state: false });
-              console.log('Data moved and reset successfully after 1 minute.');
-            }
-          }
-        }, 60000); // Check after 1 minute
-  
+      if (colorData && colorData.state && colorData.author === author && colorData.title === title) {
+        console.log('Data exists in', colorCategoryPath, 'with matching author and title.');
         return;
       }
     }
   
-    console.log('All color categories are in use. Unable to move card value.');
+    // If no available color is found, exit
+    if (!selectedColor) {
+      console.log('All color categories are in use. Unable to move card value.');
+      return;
+    }
+  
+    const colorCategoryPath = `${targetPath}/${selectedColor}`;
+    console.log('It is saved in', colorCategoryPath);
+  
+    const currentTime = new Date().getTime();
+    const currentTimeStamp = new Date();
+    const formattedTimeStamp = this.datePipe.transform(currentTimeStamp, 'medium', 'GMT+8');
+  
+    const newData = { 
+      cardvalue: cardValue, 
+      timecode: currentTime, 
+      state: true, 
+      title: title, 
+      author: author, 
+      timestamp: formattedTimeStamp
+    };
+  
+    await this.db.object(colorCategoryPath).update(newData);
+  
+    // After updating the state and saving the card value, remove the cardValue from readCard
+    await this.db.object(`LITES/readCard`).remove().then(() => {
+      console.log('Card value removed from readCard successfully.');
+    }).catch(error => {
+      console.error('Error removing card value from readCard:', error);
+    });
+  
+    setTimeout(async () => {
+      const updatedColorData = await this.db.object(colorCategoryPath).valueChanges().pipe(take(1)).toPromise() as { state: boolean, timecode: number };
+  
+      if (updatedColorData && updatedColorData.state) {
+        const elapsedTime = new Date().getTime() - updatedColorData.timecode;
+        if (elapsedTime >= 60000) { // 1 minute in milliseconds
+          await this.db.object(colorCategoryPath).remove().then(() => {
+            console.log('Fields deleted.');
+          }).catch(error => {
+            console.error('Can\'t delete fields', error);
+          });
+  
+          await this.db.object(colorCategoryPath).update({ state: false });
+          console.log('Data moved and reset successfully after 1 minute.');
+        }
+      }
+    }, 60000); // Check after 1 minute
+    
+      
+    if (selectedColor) {
+      const confirmSearch = window.confirm('Book Found. Click okay to proceed...');
+      if(confirmSearch){
+        this.dialogRef.close('success');
+      }
+      
+    } else {
+      this.dialogRef.close('error');
+    }
+
+        
   }
+  
   
   
   onClose(): void {
     this.dialogRef.close();
+    
   }
 }

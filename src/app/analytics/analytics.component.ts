@@ -1,7 +1,7 @@
 // analytics.component.ts
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { AnalyticsService } from '../../assets/service/analytics.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';;
 
 @Component({
   selector: 'app-analytics',
@@ -22,6 +22,7 @@ totalSearches: number = 0;
 uniqueTermsOrBooks: number = 0;
 mostSearchedItem: any = null;
 mostSearchedPercentage: number = 0;
+mostSearchedItems: any[] = [];
 
 
   constructor(
@@ -38,15 +39,54 @@ mostSearchedPercentage: number = 0;
       this.analyticsService.getSearchTermsAnalytics(this.selectedDateRange).subscribe(data => {
         console.log('Search terms analytics data:', data);
         this.analyticsData = data;
+  
+        // Compute analytics metrics
+        this.totalSearches = this.analyticsData.reduce((acc, item) => acc + item.numTimesSearched, 0);
+        this.uniqueTermsOrBooks = this.analyticsData.length;
+  
+        // Sort analytics data in descending order based on numTimesSearched
+        this.analyticsData.sort((a, b) => b.numTimesSearched - a.numTimesSearched);
+  
+        // Select the top 10 searched items
+        this.mostSearchedItems = this.analyticsData;
+        this.mostSearchedItems.forEach(item => {
+          item.percentage = (item.numTimesSearched / this.totalSearches) * 100;
+        });
+  
+        console.log('Total Number of Searches:', this.totalSearches);
+        console.log('Number of Unique Terms:', this.uniqueTermsOrBooks);
+        console.log('Most Searched Terms:', this.mostSearchedItems);
       });
     } else {
       this.analyticsService.getSearchedBooksAnalytics(this.selectedDateRange).subscribe(data => {
         console.log('Searched books analytics data:', data);
         this.analyticsData = data;
+  
+        // Compute analytics metrics
+        this.totalSearches = this.analyticsData.reduce((acc, item) => acc + item.numTimesSearched, 0);
+        this.uniqueTermsOrBooks = this.analyticsData.length;
+  
+        // Sort analytics data in descending order based on numTimesSearched
+        this.analyticsData.sort((a, b) => b.numTimesSearched - a.numTimesSearched);
+  
+        // Select the top 10 searched items
+        this.mostSearchedItems = this.analyticsData;
+        this.mostSearchedItems.forEach(item => {
+          item.percentage = (item.numTimesSearched / this.totalSearches) * 100;
+        });
+  
+        console.log('Total Number of Searches:', this.totalSearches);
+        console.log('Number of Unique Books:', this.uniqueTermsOrBooks);
+        console.log('Most Searched Books:', this.mostSearchedItems);
       });
     }
   }
   
+  
+  findMostSearchedItems(data: any[]): any[] {
+    const maxSearched = Math.max(...data.map(item => item.numTimesSearched));
+    return data.filter(item => item.numTimesSearched === maxSearched);
+  }
   
 
   filterByDateRange(event: any): void {
@@ -126,4 +166,21 @@ mostSearchedPercentage: number = 0;
     const colorSetIndex = index % this.colors.length; // Cycle through color sets
     return this.colors[colorSetIndex][index % this.colors[colorSetIndex].length];
   }
+
+// Method to expand the bar graph on hover
+expandBar(event: MouseEvent): void {
+  const bar = event.currentTarget as HTMLElement;
+  bar.style.width = 'auto';
+}
+
+// Method to restore the original size of the bar graph when hover ends
+ // Method to restore the original size of the bar graph when hover ends
+ restoreBar(event: MouseEvent, item: any): void {
+  // Restore the bar's width to its initial value
+  const initialWidth = this.calculateBarWidth(item.numTimesSearched);
+  const bar = event.currentTarget as HTMLElement;
+  bar.style.width = initialWidth + '%';
+}
+
+  
 }

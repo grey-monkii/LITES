@@ -23,6 +23,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    overflow-y: auto;
   }
   
   /* Controls section */
@@ -34,13 +35,16 @@
   .controls button {
     margin-right: 10px;
     padding: 8px 12px;
-    font-size: 14px;
+    font-size: large;
   }
   
   /* Horizontal bar graph */
   .analytics-graph {
     width: 100%;
     max-width: 800px; /* Adjust maximum width as needed */
+    max-height: 500px; /* Adjust height as needed */
+    overflow-y: auto; 
+    overflow-x: hidden;
   }
   
   .bar {
@@ -50,28 +54,72 @@
     margin-bottom: 5px;
     background-color: #f0f0f0;
     border-radius: 5px;
+    overflow: hidden; /* Ensure that the text does not overflow the bar */
+    position: relative; /* Add position relative for child positioning */
+    transition: width 0.3s ease; /* Add transition for smooth width adjustment */
+    width:auto;
+    min-width: 5%;
+  }
+
+  .bar-text {
+    color: white;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    flex-grow: 1; /* Allow the text to grow within the bar */
+  }
+
+  .bar:hover {
+    width: auto; /* Allow the bar to expand fully when hovered */
   }
   
-  .bar span {
-    margin-right: 10px;
+  .bar:hover .bar-text {
+    overflow: visible; /* Ensure full text is visible on hover */
+    white-space: normal; /* Allow text to wrap */
+    z-index: 999; /* Ensure that the text is displayed above other elements */
   }
   
-  .bar-text{
+  
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    top: -30px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: maroon;
+    color: white;
+    font-size: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .bar:hover .tooltip {
+    opacity: 1;
+  }
+  
+  .search-count {
+    overflow: visible; /* Allow the search count to be visible */
     color: white;
   }
+  
+  
+  
   /* Analysis section */
   .analysis {
     width: 100%;
-    max-width: 800px; /* Adjust maximum width as needed */
+    max-width: 1000px; /* Adjust maximum width as needed */
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   
-
-
-
 /* Side Navbar */
 .ul2 {
     list-style-type: none;

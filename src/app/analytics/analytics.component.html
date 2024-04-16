@@ -22,8 +22,6 @@
     </nav>
   </div>
 
-
-<!-- analytics.component.html -->
 <!-- analytics.component.html -->
 <div class="analytics-container">
     <div class="controls">
@@ -40,38 +38,42 @@
       <button (click)="toggleSortOrder()">Toggle Sort Order</button>
     </div>
     <div class="analytics-graph">
-      <!-- Display analytics data as horizontal bars -->
-      <div class="bar" *ngFor="let item of analyticsData; let i = index" 
-           [style.width.%]="calculateBarWidth(item.numTimesSearched)"
-           [style.backgroundColor]="getBarColor(i)">
-        <span class="bar-text">{{ selectedDataType === 'books' ? item.title : item.term }} - {{ item.numTimesSearched }}</span>
+      <div class="bar" *ngFor="let item of mostSearchedItems; let i = index"
+        [style.width.%]="calculateBarWidth(item.numTimesSearched)"
+        [style.background-color]="getBarColor(i)"
+        (mouseenter)="expandBar($event)"
+        (mouseleave)="restoreBar($event, item)">
+        <span class="bar-text" [title]="item[selectedDataType === 'terms' ? 'term' : 'title']">
+          {{ item[selectedDataType === 'terms' ? 'term' : 'title'] | slice:0:15 }} 
+        </span>
+        <!-- Display the number of searches -->
+        <span class="search-count">[{{ item.numTimesSearched }}]</span>
+        <!-- Tooltip for full text on hover -->
+        <span class="tooltip">{{ item[selectedDataType === 'terms' ? 'term' : 'title'] }}</span>
       </div>
     </div>
-    <div class="analysis">
-        <!-- Display total number of searches -->
-        <p><strong>Total Number of Searches: </strong>{{ totalSearches }}</p>
-      </div>
-      
-      <div class="analysis">
-        <!-- Display number of unique terms or books -->
-        <p><strong>Number of Unique {{ selectedDataType === 'terms' ? 'Terms' : 'Books' }}: </strong>{{ uniqueTermsOrBooks }}</p>
-      </div>
-      
-      <div class="analysis">
-        <!-- Display most searched term or book -->
-        <p><strong>Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedItem?.title || 'N/A' }}</p>
-      </div>
-      
-      <div class="analysis">
-        <!-- Display searches for most searched term or book -->
-        <p><strong>Searches for Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedItem?.numTimesSearched || 'N/A' }}</p>
-      </div>
-      
-      <div class="analysis">
-        <!-- Display percentage of most searched term or book compared to other searches -->
-        <p><strong>Percentage of Most Searched {{ selectedDataType === 'terms' ? 'Term' : 'Book' }}: </strong>{{ mostSearchedPercentage ? mostSearchedPercentage.toFixed(2) + '%' : 'N/A' }}</p>
-      </div>      
-      
+    
+
+
+    <div class="analysis" *ngIf="totalSearches !== 0">
+      <p>During this period, a total of <strong>{{totalSearches}}</strong> search{{ totalSearches !== 1 ? 'es' : '' }} {{ totalSearches !== 1 ? 'were' : 'was' }} conducted. 
+        <br>{{ totalSearches !== 1 ? 'Among these searches,' : '' }} <strong>{{ totalSearches !== 1 ? uniqueTermsOrBooks : '' }}
+        </strong>  {{ totalSearches !== 1 ? 'unique' : '' }} {{ uniqueTermsOrBooks === 1 ? (selectedDataType === 'terms' ? '' : '') : (selectedDataType === 'terms' ? 'terms' : 'books') }}
+        {{ totalSearches !== 1 ? 'were explored.' : '' }}</p>
+      <p *ngIf="mostSearchedItems.length === 1">The{{ totalSearches !== 1 ? 'most' : '' }} searched {{ uniqueTermsOrBooks === 1 ? (selectedDataType === 'terms' ? 'term' : 'book') : (selectedDataType === 'terms' ? 'terms' : 'books') }}
+        {{ totalSearches !== 1 ? 'were:' : 'was:' }}</p>
+      <ul>
+        <li *ngFor="let item of mostSearchedItems; let i = index">
+          <strong>{{ item[selectedDataType === 'terms' ? 'term' : 'title'] || 'N/A' }}</strong> ({{ item.numTimesSearched }} search{{ totalSearches !== 1 ? 'es' : ''}}, {{ item.percentage ? item.percentage.toFixed(2) + '%' : 'N/A' }})
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="totalSearches === 0" class="analysis">
+      <p>No searches were conducted during this period.</p>
+    </div>
+    
+    
+    
   </div>
 
   

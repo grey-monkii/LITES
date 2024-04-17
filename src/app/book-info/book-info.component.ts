@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { DatePipe } from '@angular/common';
 import { take, delay } from 'rxjs/operators';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
+
 
 @Component({
   selector: 'app-book-info',
@@ -16,7 +18,8 @@ export class BookInfoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public book: any,
     private dialogRef: MatDialogRef<BookInfoComponent>,
     private db: AngularFireDatabase,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog
   ) {} // Access passed book data
 
   ngOnInit() {
@@ -117,6 +120,7 @@ export class BookInfoComponent implements OnInit {
       const confirmSearch = window.confirm('Book Found. Click okay to proceed...');
       if(confirmSearch){
         this.dialogRef.close('success');
+        this.openMapDialog(this.book);
       }
       
     } else {
@@ -130,6 +134,11 @@ export class BookInfoComponent implements OnInit {
   
   onClose(): void {
     this.dialogRef.close();
-    
+  }
+
+  openMapDialog(bookData: any): void {
+    this.dialog.open(MapDialogComponent, {
+      data: bookData
+    });
   }
 }

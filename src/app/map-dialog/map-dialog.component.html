@@ -1,0 +1,10 @@
+<div class="map-dialog-container">
+    <h2 class="header">Book Finder Map</h2>
+    <div class="image-container">
+      <img [src]="imageUrl" (click)="toggleImage()" class="map-image">
+      <p class="image-message">(Click the image to switch between top view and isometric view)</p>
+    </div>
+    <p class="book-info">The <strong>{{ bookData.title }}</strong> is located at <strong>{{ bookData.section }}, {{ bookData.shelf }}, {{ bookData.level }}</strong>.</p>
+    <button class="close-button" (click)="closeDialog()">Close ({{ countdown }}s)</button>
+</div>
+  

@@ -120,13 +120,13 @@ export class BookInfoComponent implements OnInit {
       const confirmSearch = window.confirm('Book Found. Click okay to proceed...');
       if(confirmSearch){
         this.dialogRef.close('success');
-        this.openMapDialog(this.book);
+        // this.openMapDialog(this.book);
       }
       
     } else {
       this.dialogRef.close('error');
     }
-
+    this.openMapDialog(this.book);
         
   }
   

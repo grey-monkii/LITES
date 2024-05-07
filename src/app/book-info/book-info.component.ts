@@ -74,6 +74,14 @@ export class BookInfoComponent implements OnInit {
   
     const colorCategoryPath = `${targetPath}/${selectedColor}`;
     console.log('It is saved in', colorCategoryPath);
+
+    this.db.database.ref('LITES/savedColorPath').set(colorCategoryPath.toString())
+      .then(() => {
+        console.log(`Color path saved to /LITES/savedColorPath: ${colorCategoryPath}`);
+      })
+      .catch((error) => {
+        console.error('Error saving color path:', error);
+      });
   
     const currentTime = new Date().getTime();
     const currentTimeStamp = new Date();
@@ -120,14 +128,12 @@ export class BookInfoComponent implements OnInit {
       const confirmSearch = window.confirm('Book Found. Click okay to proceed...');
       if(confirmSearch){
         this.dialogRef.close('success');
-        // this.openMapDialog(this.book);
       }
-      
+      this.openMapDialog(this.book);
     } else {
       this.dialogRef.close('error');
     }
-    this.openMapDialog(this.book);
-        
+    
   }
   
   

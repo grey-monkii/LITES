@@ -5,8 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 @Component({
   selector: 'app-map-dialog',
   templateUrl: './map-dialog.component.html',
-  styleUrls: ['./map-dialog.component.css'],
-  
+  styleUrls: ['./map-dialog.component.css']
 })
 export class MapDialogComponent {
   imageUrl: string = '';
@@ -14,14 +13,16 @@ export class MapDialogComponent {
   showMapImage: boolean = true; // Flag to indicate whether to show the map image or the 'iso' image
   countdown: number = 30; // Timer countdown in seconds
   countdownInterval: any; // Interval reference
+  selectedColor: string = '';
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public bookData: any,
+    @Inject(MAT_DIALOG_DATA) public dialogData: any,
     private storage: AngularFireStorage,
     private dialogRef: MatDialogRef<MapDialogComponent>
   ) {
     this.loadMapImage();
     this.startCountdown();
+    this.selectedColor = this.dialogData.selectedColor; // Assign selected color from injected data
   }
 
   ngOnDestroy(): void {
@@ -30,14 +31,16 @@ export class MapDialogComponent {
   }
 
   loadMapImage(): void {
-    const imagePath = `map/${this.bookData.section}/${this.bookData.shelf}/${this.bookData.level}.jpg`;
+    const { section, shelf, level } = this.dialogData.bookData;
+    const imagePath = `map/${section}/${shelf}/${level}.jpg`;
     this.storage.ref(imagePath).getDownloadURL().subscribe(url => {
       this.imageUrl = url;
     });
   }
 
   loadIsoImage(): void {
-    const isoImagePath = `map/${this.bookData.section}/${this.bookData.shelf}/${this.bookData.level}_iso.jpg`;
+    const { section, shelf, level } = this.dialogData.bookData;
+    const isoImagePath = `map/${section}/${shelf}/${level}_iso.jpg`;
     this.storage.ref(isoImagePath).getDownloadURL().subscribe(url => {
       if (url) {
         this.imageUrl = url;

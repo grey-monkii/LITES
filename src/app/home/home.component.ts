@@ -9,6 +9,7 @@ import { BookOverviewDialogComponent } from '../book-overview-dialog/book-overvi
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AnalyticsService } from '../../assets/service/analytics.service';
 import { take, delay } from 'rxjs/operators';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ export class HomeComponent implements OnInit {
   searchInput: string = '';
   books$: Observable<any[]> | undefined;
   filteredBooksList: any[] = [];
-  
+  isBookInfoDialogOpen: boolean = false;
 
   constructor(private firestore: AngularFirestore,
               private db: AngularFireDatabase,
@@ -181,34 +182,43 @@ calculateScore(book: any, searchTokens: string[]): number {
     this.analyticsService.updateSearchedBooksAnalytics(bookData.title);
   }
 
-  onCardClick(book: any): void {
+ onCardClick(book: any): void {
     // Display confirmation dialog
     const confirmSearch = window.confirm('Do you want to find this book using LITES?');
   
     // Check user's response
     if (confirmSearch) {
-      // Implement action when user confirms
-      console.log('Finding book using LITES:', book);
-      // You can navigate to a different page or perform any other action here
-
       // Open modal
       const dialogRef = this.dialog.open(BookInfoComponent, {
-        data: book
+        data: book,
+        disableClose: true // Prevent modal from closing when clicking outside
       });
 
-      // // Handle modal close
-      // dialogRef.afterClosed().subscribe(result => {
-      //   console.log('Modal closed:', result);
-      //   // Implement any action based on modal result
-      // });
-      this.analyticsService.updateSearchedBooksAnalytics(book.title);
-      
+      // Set the flag to indicate that the dialog is now open
+      this.isBookInfoDialogOpen = true;
+
+      // Handle modal close
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Modal closed:', result);
+        // Reset the flag when the dialog is closed
+        this.isBookInfoDialogOpen = false;
+        
+        // Perform the "book found" action only if the dialog is closed with success
+        if (result === 'success') {
+          // Implement the "book found" action here
+          console.log('Book found successfully:', book);
+          this.analyticsService.updateSearchedBooksAnalytics(book.title);
+        }
+      });
     } else {
       // Implement action when user cancels
       console.log('User cancelled search.');
       // You can perform any other action here, such as closing the dialog or doing nothing
     }
-  }
+}
+  
+  
+  
 
 
 

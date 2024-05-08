@@ -6,10 +6,11 @@
     <p><strong>Level:</strong> {{ book.level }}</p>
     <p><strong>Title:</strong> {{ book.title }}</p>
     <p><strong>Author:</strong> {{ book.author }}</p>
+    <p *ngIf="selectedColor"><strong>Selected Color:</strong> {{ selectedColor }}</p>
   </div>
   <div class="id-container">
     <div class="IDimg"><img src="assets/images/TapID.gif" alt="TapID"></div>
     <h2>{{ readingId }}</h2>
   </div>
-  <button mat-button (click)="onClose()">Close</button>
+  <!-- <button mat-button (click)="onClose()">Close</button> -->
 </div>

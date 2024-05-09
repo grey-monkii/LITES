@@ -10,12 +10,15 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CardValComponent } from './card-val/card-val.component';
 
+import { AddStudentComponent } from './add-student/add-student.component';
+
 const routes: Routes = [
   { path: '', component: HomeComponent }, // Assuming AppComponent is your main component
   { path: 'login', component: LoginComponent },
   { path: 'admin', component: AdminComponent, canActivate: [AuthenticationGuard] },
   { path: 'home/cardValue', component: CardValComponent }, // Assuming AppComponent is your main component
   {path: 'analytics', component: AnalyticsComponent},
+  { path: 'addStudent', component: AddStudentComponent },
 
 ];
 

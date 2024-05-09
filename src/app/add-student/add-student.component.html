@@ -1,0 +1,21 @@
+<!-- add-student.component.html -->
+
+<div class="add-student">
+    <h2>Admin Panel - Input Student Information</h2>
+    <form (ngSubmit)="saveStudent()">
+      <div class="info-details">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" [(ngModel)]="student.name" required><br><br>
+        <label for="idNumber">ID Number:</label><br>
+        <input type="text" id="idNumber" name="idNumber" [(ngModel)]="student.idNumber" required><br><br>
+        <label for="course">Course:</label><br>
+        <input type="text" id="course" name="course" [(ngModel)]="student.course" required><br><br>
+        <label for="year">Year:</label><br>
+        <input type="text" id="year" name="year" [(ngModel)]="student.year" required><br><br>
+        <label for="cardValue">Card Value:</label><br>
+        <input type="text" id="cardValue" name="cardValue" [(ngModel)]="readingId" required><br><br> <!-- bind to readingId -->
+      </div>
+      <button type="submit">Save Student</button>
+    </form>
+  </div>
+  

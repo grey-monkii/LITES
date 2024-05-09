@@ -27,6 +27,7 @@ import { DatePipe } from '@angular/common';
 import { TagSelectionDialogComponent } from './tag-selection-dialog/tag-selection-dialog.component';
 import { BookOverviewDialogComponent } from './book-overview-dialog/book-overview-dialog.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
+import { AddStudentComponent } from './add-student/add-student.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AnalyticsComponent } from './analytics/analytics.component';
     BookInfoComponent,
     TagSelectionDialogComponent,
     BookOverviewDialogComponent,
-    AnalyticsComponent
+    AnalyticsComponent,
+    AddStudentComponent
   ],
   imports: [
     BrowserModule,

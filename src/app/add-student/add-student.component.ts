@@ -16,7 +16,7 @@ export class AddStudentComponent implements OnInit{
   readCardRef: any; 
 
   constructor(private firestore: AngularFirestore, private db: AngularFireDatabase, private datePipe: DatePipe) {
-    this.readCardRef = this.db.object(`LITES/readCard/${this.uniqueId}/cardvalue`).valueChanges(); // Fetch cardvalue based on uniqueId
+    this.readCardRef = this.db.object(`LITES/readCard/cardvalue`).valueChanges(); // Fetch cardvalue based on uniqueId
   }
 
   saveStudent() {

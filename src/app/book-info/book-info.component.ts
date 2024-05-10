@@ -34,27 +34,26 @@ export class BookInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    let cardRead = false; // Flag to track if card has been read
     
-    this.selectedColor = " "
-    // Add listener to readCard node
-    this.readCardRef.snapshotChanges().subscribe((changes) => {
-      changes.forEach((change) => {
-        if (!this.processingData) {
-          this.processingData = true;
-          const cardValueObject = change.payload.val();
-          if (cardValueObject) {
-            this.readingId = "Reading Card";
-            const cardValue = cardValueObject.cardvalue;
-            console.log('Card Value was read successfully.');
-            this.moveData(cardValue);
-          } else {
-            this.readingId = "Tap ID to locate book";
-          }
-        }
-      });
+    // Fetch cardValue from Firebase Realtime Database
+    this.db.list('LITES/readCard').valueChanges().subscribe((data: any[]) => {
+      const cardValueObject = data.find(item => item.cardvalue);
+      if (cardValueObject && !cardRead) { // Check if card exists and hasn't been read yet
+        cardRead = true; // Set flag to true to indicate card has been read
+        
+        this.readingId = "Reading Card";
+        const cardValue = cardValueObject.cardvalue;
+        console.log('Card Value was read successfully.');
+  
+        setTimeout(() => {
+          this.moveData(cardValue);
+        }, 1000);
+        
+      } else {
+        this.readingId = "Tap ID to locate book";
+      }
     });
-    // Call moveData method to select color
-    this.moveData();
   }
 
 
@@ -242,4 +241,17 @@ resetData(): void {
     this.selectedColor = "";
     this.bookFound = false;
   }
+  
+  refreshDialog(): void {
+    const dialogRef = this.dialog.open(BookInfoComponent, {
+      // Pass updated data or options to the dialog if needed
+    });
+
+    // After dialog is closed, you can subscribe to the afterClosed event
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle dialog close event if needed
+    });
+  }  
 }
+
+
